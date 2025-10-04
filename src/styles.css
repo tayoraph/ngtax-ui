@@ -205,7 +205,7 @@
   }
 
   :root[data-theme='blue'] {
-    --primary: #2490FF;
+    --primary: #06492f;
   }
 
   .dark[data-theme='blue'] {
