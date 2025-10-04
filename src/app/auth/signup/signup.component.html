@@ -1,0 +1,16 @@
+<mat-card class="auth-card">
+      <img src="/assets/tax.png" class="auth-img" alt="Tax" />
+      <h2>Sign Up</h2>
+      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="signUpForm.invalid">Sign Up</button>
+      </form>
+      <p style="margin-top:12px">Already have an account? <a routerLink="/login">Login</a></p>
+    </mat-card>

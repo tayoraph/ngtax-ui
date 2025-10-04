@@ -1,0 +1,159 @@
+<header class="top-nav">
+  <div class="nav-container">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="assets/logo.png" alt="Thomas Northman" />
+      <span>TAX NG</span>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+      <a routerLink="/about">Service</a>
+      <a routerLink="/international">Learn</a>
+      <a routerLink="/rates">FAQs</a>
+      <!-- <a routerLink="/rates">Developer</a> -->
+      <a routerLink="/contact">Contact</a>
+    </nav>
+
+    <!-- Button -->
+    <button mat-raised-button color="primary" class="nav-cta">
+      CALCULATE YOUR TAX
+    </button>
+  </div>
+</header>
+
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-container">
+    <!-- Left Content -->
+    <div class="hero-content fade-in">
+      <span class="tag">YOUR SMART TAX CALCULATOR</span>
+      <h1>
+        Calculate your <span class="highlight">Tax</span><br />
+        With ease
+      </h1>
+      <p>
+  Quickly calculate your tax with our smart, easy-to-use tax calculator. Completely free and tailored to your needs.
+      </p>
+
+      <button mat-raised-button color="primary" class="cta">
+      Try the Calculator
+      </button>
+    </div>
+
+    <!-- Right Content (Lady Justice Image) -->
+    <div class="hero-image">
+      <img src="/assets/tax1.jpg" alt="Lady Justice" />
+    </div>
+  </div>
+</section>
+
+
+<!-- Features Section -->
+<section class="container features-section">
+  <h2 class="section-title fade-in">Services</h2>
+  <div class="features">
+    <div class="feature fade-in">
+      <img src="https://img.icons8.com/ios-filled/100/calculator.png" alt="Calculator Icon" />
+      <h3>Tax Calculation</h3>
+      <p>Our tool ensures you get the most accurate estimate of your tax liability.</p>
+    </div>
+    <div class="feature fade-in" style="animation-delay: 0.3s;">
+      <img src="https://img.icons8.com/ios-filled/100/easy.png" alt="Simple Icon" />
+      <h3>Tax Education</h3>
+      <p>Have a full understanding of the new tax reform iin Nigeria.</p>
+    </div>
+    <div class="feature fade-in" style="animation-delay: 0.6s;">
+      <img src="https://img.icons8.com/ios-filled/100/lock.png" alt="Secure Icon" />
+      <h3>Developer Integration</h3>
+      <p>Your information is safe. We don’t store any of your personal data.</p>
+    </div>
+  </div>
+  <div class="cta-wrapper fade-in" style="animation-delay: 0.9s;">
+    <a href="#calculator"><button mat-raised-button color="primary" class="cta">Start Calculating</button></a>
+  </div>
+</section>
+
+<!-- Calculator Section -->
+<section id="calculator" class="container calculator-section fade-in">
+  <h2 class="section-title">Tax Calculator</h2>
+  <p class="section-subtitle">(Embed your actual calculator here or link to it)</p>
+</section>
+
+<!-- FAQ Section -->
+<!-- <section class="container faq-section fade-in">
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Is my data safe?</mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>Yes! We don’t store any personal data — your privacy is our priority.</p>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Is SmartTax really free?</mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>Absolutely, SmartTax is 100% free to use with no hidden fees.</p>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Can I trust the calculations?</mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>We use up-to-date tax brackets and rules to provide accurate estimates.</p>
+    </mat-expansion-panel>
+  </mat-accordion>
+</section> -->
+
+
+
+<!-- Contact Section -->
+<!-- <section class="contact-section fade-in">
+  <div class="contact-container">
+    <div class="contact-form">
+      <h2 class="section-title">Contact Us</h2>
+      <form (ngSubmit)="submitContact()" [formGroup]="contactForm" novalidate>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required />
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="contactForm.get('name')?.invalid">Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required />
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="contactForm.get('email')?.invalid">Valid email is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Message</mat-label>
+          <textarea matInput formControlName="message" rows="5" required></textarea>
+          <mat-icon matSuffix>chat</mat-icon>
+          <mat-error *ngIf="contactForm.get('message')?.invalid">Message is required</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="contactForm.invalid">
+          Send Message
+        </button>
+      </form>
+    </div>
+
+    <div class="contact-info">
+      <h3>Get in Touch</h3>
+      <p>Have questions about taxes in Nigeria? Reach out</p>
+      <ul>
+        <li><mat-icon>location_on</mat-icon> Lagos, Nigeria</li>
+        <li><mat-icon>phone</mat-icon> +234 800 123 4567</li>
+        <li><mat-icon>email</mat-icon> support@Taxng.com</li>
+      </ul>
+    </div>
+  </div>
+</section> -->
+
+
+<footer>
+  &copy; 2025 TaxNg. All rights reserved.
+</footer>

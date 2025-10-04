@@ -1,0 +1,43 @@
+<mat-card class="auth-card">
+  <img src="/assets/tax.png" class="auth-img" alt="Tax" />
+
+  <h2>Login</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <!-- Email -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Enter your email" formControlName="email" />
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+      <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+      Login
+    </button>
+  </form>
+
+  <div class="social-login">
+    <p>Or login with:</p>
+    <button mat-stroked-button color="primary" class="google-btn">
+      <mat-icon svgIcon="google"></mat-icon>
+      Google
+    </button>
+    <button mat-stroked-button color="primary" class="facebook-btn">
+      <mat-icon svgIcon="facebook"></mat-icon>
+      Facebook
+    </button>
+  </div>
+
+  <p class="signup-text">
+    Don't have an account? <a routerLink="/signup">Sign up</a>
+  </p>
+</mat-card>
