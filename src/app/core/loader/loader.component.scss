@@ -1,0 +1,13 @@
+/* Optional: Use if you're not using Tailwind */
+.flex {
+  display: flex;
+}
+.h-screen {
+  height: 100vh;
+}
+.m-auto {
+  margin: auto;
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
