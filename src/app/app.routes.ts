@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LandingComponent } from './modules/layout/landing/landing.component';
 
 const routes: Routes = [
-  // { path: '', component: LandingComponent },
+  { path: '', component: LandingComponent },
  {
     path: '',
     loadChildren: () => import('./modules/layout/layout.module').then(m => m.LayoutModule)
