@@ -1,13 +1,15 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { TaxData, EntityType } from './tax.model';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { HttpClientModule } from '@angular/common/http';
+import { TaxReformService } from './tax.service';
 
 @Component({
   selector: 'app-tax-calculator',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, NgSelectModule, HttpClientModule],
   templateUrl: './tax-calculator.component.html',
 })
 export class TaxCalculatorComponent {
@@ -39,7 +41,11 @@ export class TaxCalculatorComponent {
   )];
 
   Roles: string[] = [];
- 
+
+  errorMessage = signal<string | null>(null);
+
+ private taxService = inject(TaxReformService);
+
   constructor(private fb: FormBuilder) {
     // Entity-based form
     this.taxForm = this.fb.group({ entityType: ['Individuals'], category: [''], role: [''], income: [0] });
@@ -49,6 +55,7 @@ export class TaxCalculatorComponent {
     this.categoryForm = this.fb.group({ category: [''], income: [0] });
 
      this.Roles = this.extractAllRoles(this.taxData);
+     this.fetchRoles();
   }
 
   extractAllRoles(data: any): string[] {
@@ -163,5 +170,29 @@ calculateByTitle() {
 
   this.taxResult.set((taxRate / 100) * income);
 }
+
+ fetchRoles() {
+    this.taxService.getAll().subscribe({
+      next: (data) => {
+        const rolesSet = new Set<string>();
+        console.log(data)
+        data.forEach((doc:any) => {
+          Object.values(doc.individuals || {}).forEach((cat:any) => {
+            cat.roles.forEach((role:any) => rolesSet.add(role.title || role));
+          });
+          Object.values(doc.businesses || {}).forEach((cat:any) => {
+            cat.roles.forEach((role:any) => rolesSet.add(role.title || role));
+          });
+        });
+
+        this.Roles = Array.from(rolesSet);
+      },
+      error: (err) => {
+        this.errorMessage.set('Failed to fetch roles.');
+      }
+    });
+  }
+
+ 
 
 }
