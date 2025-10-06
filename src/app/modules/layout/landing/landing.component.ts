@@ -55,7 +55,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
     fadeEls.forEach(el => observer.observe(el));
   }
 
-  submitContact() {
+  onSubmit() {
     if (this.contactForm.valid) {
       alert('Thank you for your message!');
       this.contactForm.reset();

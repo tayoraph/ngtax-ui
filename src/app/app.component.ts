@@ -21,4 +21,9 @@ export class AppComponent {
       this.isLoading = false;
     }, 2000);
   }
+
+  toggleTheme(mode:string = 'dark') {
+  document.body.classList.toggle(mode);
+}
+
 }
