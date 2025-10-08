@@ -291,3 +291,27 @@ select {
 [type='radio'] {
   @apply h-4 w-4 rounded-sm border-border bg-background checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus:ring-2 focus:ring-primary;
 }
+
+/* Custom sleek toast style */
+.ngx-toastr.sleek-toast {
+  background: #323232;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.ngx-toastr.sleek-toast .toast-message {
+  font-size: 14px;
+}
+
+.ngx-toastr.sleek-toast .toast-close-button {
+  color: #aaa;
+  opacity: 0.7;
+}
+
+.ngx-toastr.sleek-toast:hover .toast-close-button {
+  opacity: 1;
+  color: #fff;
+}

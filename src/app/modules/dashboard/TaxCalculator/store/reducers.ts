@@ -1,43 +1,63 @@
 import { createReducer, on } from '@ngrx/store';
-import * as TaxReformActions from './actions';
-import { TaxReform } from '../models/tax-reform.model';
+import { TaxReformState } from '../models/tax-reform.model';
+import * as TaxReformActions from '../store/actions';
 
-export interface State {
-  all: TaxReform[];
-  roleData: any;
-  loading: boolean;
-  error: any;
-}
-
-export const initialState: State = {
-  all: [],
+export const initialState: TaxReformState = {
+  allData: [],
+  categoryData: null,
   roleData: null,
+  taxCategoryData: [],
   loading: false,
   error: null,
 };
 
 export const taxReformReducer = createReducer(
   initialState,
-  on(TaxReformActions.loadTaxReform, state => ({ ...state, loading: true })),
-  on(TaxReformActions.loadTaxReformSuccess, (state, { data }) => ({
+
+  on(
+    TaxReformActions.loadAllTaxData,
+    TaxReformActions.loadByCategory,
+    TaxReformActions.loadByRole,
+    TaxReformActions.loadByTaxCategory,
+    (state) => ({ ...state, loading: true, error: null })
+  ),
+
+  on(TaxReformActions.loadAllTaxDataSuccess, (state, { data }) => ({
     ...state,
     loading: false,
-    all: data,
+    allData: data,
   })),
-  on(TaxReformActions.loadTaxReformFailure, (state, { error }) => ({
+
+  on(TaxReformActions.loadByCategorySuccess, (state, { data }) => ({
     ...state,
     loading: false,
-    error,
+    categoryData: data,
   })),
-  on(TaxReformActions.loadByRole, state => ({ ...state, loading: true })),
+
   on(TaxReformActions.loadByRoleSuccess, (state, { data }) => ({
     ...state,
     loading: false,
     roleData: data,
   })),
-  on(TaxReformActions.loadByRoleFailure, (state, { error }) => ({
+
+  on(TaxReformActions.loadByTaxCategorySuccess, (state, { data }) => ({
     ...state,
     loading: false,
-    error,
-  }))
+    taxCategoryData: data,
+  })),
+
+  on(
+    TaxReformActions.loadAllTaxDataFailure,
+    TaxReformActions.loadByCategoryFailure,
+    TaxReformActions.loadByRoleFailure,
+    TaxReformActions.loadByTaxCategoryFailure,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      error,
+    })
+  )
 );
+
+
+

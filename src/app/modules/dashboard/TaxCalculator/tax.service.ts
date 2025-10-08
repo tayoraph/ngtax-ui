@@ -1,52 +1,72 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TaxReform } from './models/tax-reform.model';
+import { TaxReform, TaxReformData, TaxRoleDetails } from './models/tax-reform.model';
+import { Role } from './tax.model';
+import { environment } from 'src/environments/environment';
+import { BaseHttpService } from 'src/Utils/BaseHttp/base-http.service';
+import { ApiResponse } from 'src/Utils/interfaces/apiResponse';
+import { RoleTax } from './models/role-tax.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TaxReformService {
-  private baseUrl = 'http://localhost:3000/tax-reform'; // Replace with your actual backend URL
+export class TaxReformService extends BaseHttpService {
 
-  constructor(private http: HttpClient) {}
-
-  /**
-   * Get all tax reform documents
-   */
-  getAll(): Observable<TaxReform[]> {
-    return this.http.get<TaxReform[]>(`${this.baseUrl}`);
-  }
-
-  /**
-   * Get tax reform data by role title
-   * @param roleTitle string
-   */
-  getByRole(roleTitle: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/role/${roleTitle}`);
-  }
-
-  /**
-   * Get tax reform data by category (e.g. WhiteCollar, LargeCompanies)
-   * @param category string
-   */
-  getByCategory(category: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/category/${category}`);
-  }
-
-  /**
-   * Get tax reform data by tax category (e.g. PIT, CIT)
-   * @param taxCategory string
-   */
-  getByTaxCategory(taxCategory: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/tax-category/${taxCategory}`);
-  }
+    constructor(public override httpClient?: HttpClient) {
+        super()
+    }
+ 
 
   /**
    * Insert tax reform data (used in admin panel or seed action)
    * @param payload any
    */
   insertTaxData(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}`, payload);
+    let con = environment.BaseUrl + environment.getTaxByCategory;
+    return this.post<any>(con, payload);
+  }
+
+  ///////////////////
+    getAll(): Observable<TaxReformData[]> {
+    let con = environment.BaseUrl + environment.getTaxByCategory;
+
+    return this.get<TaxReformData[]>(con);
+  }
+
+  getByCategory(category: string): Observable<TaxReformData> {
+    let con = environment.BaseUrl + environment.getTaxByCategory+ category;
+
+    return this.get<TaxReformData>(con);
+  }
+
+  getByRole(role: string): Observable<TaxRoleDetails> {
+    let con = environment.BaseUrl + environment.getTaxByCategory+ role;
+
+    return this.get<TaxRoleDetails>(con);
+  }
+
+  getByTaxCategory(taxCategory: string): Observable<TaxReformData[]> {
+    let con = environment.BaseUrl + environment.getTaxByCategory+ taxCategory;
+
+    return this.get<TaxReformData[]>(con);
+  }
+
+  // get roles 
+
+  getRoles(): Observable< ApiResponse<Role[]> > {
+    let con = environment.BaseUrl + environment.getRoles;
+            return this.get<ApiResponse<Role[]>>(con, );
+  }
+
+  //Role tax
+  getTaxByRoleAndIncome(role: string, income: number): Observable<ApiResponse<RoleTax>> {
+    const params = new URLSearchParams({
+      role,
+      income: income.toString()
+    });
+    let con = environment.BaseUrl + environment.getTaxByRoleAndIncome+`?${params.toString()}`;
+
+    return this.get<ApiResponse<RoleTax>>(con);
   }
 }

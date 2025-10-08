@@ -1,0 +1,72 @@
+<!-- Modal Backdrop -->
+<div *ngIf="show" class="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+  <div
+    class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 transform transition-all duration-300 scale-100 animate-fadeIn"
+  >
+    <!-- Header with icon -->
+    <div class="flex items-center space-x-3 border-b pb-3">
+      <div [ngClass]="iconData.color" class="text-2xl">
+        {{ iconData.icon }}
+      </div>
+      <h2 class="text-xl font-semibold text-gray-800">
+        {{ title }}
+      </h2>
+      <button
+        (click)="close()"
+        class="ml-auto text-gray-400 hover:text-red-500 transition"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+    </div>
+
+    <!-- Message -->
+    <div class="mt-4 text-gray-700" *ngIf="message">
+      <p class="text-sm text-[#006B3C]">{{ message }}</p>
+    </div>
+
+    <!-- Data Table -->
+   <div class="mt-4 overflow-x-auto" *ngIf="data">
+  <table class="w-full text-sm text-left text-gray-700 border mt-2">
+    <tbody>
+      <tr *ngFor="let key of objectKeys(data)" class="border-b align-top">
+        <th class="py-2 px-4 font-medium bg-gray-100 w-1/3">{{ key }}</th>
+        <td class="py-2 px-4">
+          <!-- Check if it's an array -->
+          <ng-container *ngIf="Array.isArray(data[key]); else notArray">
+            <!-- Check if the array contains objects -->
+            <ng-container *ngIf="isArrayOfObjects(data[key]); else simpleArray">
+              <div *ngFor="let item of data[key]" class="mb-2 border p-2 rounded bg-gray-50">
+                <div *ngFor="let objKey of objectKeys(item)">
+                  <span class="font-semibold">{{ objKey }}:</span> {{ item[objKey] }}
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Fallback: simple string array -->
+            <ng-template #simpleArray>
+              {{ data[key].length ? data[key].join(', ') : 'None' }}
+            </ng-template>
+          </ng-container>
+
+          <!-- Not an array -->
+          <ng-template #notArray>
+            {{ data[key] || 'None' }}
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+    <!-- Footer -->
+    <div class="mt-6 flex justify-end">
+      <button
+        (click)="close()"
+        class="bg-[#008751] hover:bg-[#006B3C] text-white px-4 py-2 rounded-md transition"
+      >
+        Okay
+      </button>
+    </div>
+  </div>
+</div>

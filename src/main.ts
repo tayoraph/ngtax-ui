@@ -5,15 +5,13 @@ import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { FormValidation } from './Utils/formsValidations/formValidation';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { AuthEffects } from './app/modules/auth/store/auth.effects';
-import { reducers } from './Utils/store';
+import { appStoreProviders, reducers } from './Utils/store';
 import { loaderInterceptor } from './app/core/interceptor/loader.interceptor';
 import { AppRoutingModule } from './app/app.routes';
+import { toastrProvider } from './Utils/config/toastr.config';
 
 if (environment.production) {
   enableProdMode();
@@ -25,9 +23,11 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [importProvidersFrom(BrowserModule, AppRoutingModule), provideAnimations(),
-    provideHttpClient(withInterceptors([ (req, next) => inject(loaderInterceptor).call(req, next) ])),
-    provideStore(reducers),
-    provideEffects([AuthEffects]),
+    provideHttpClient(
+          withInterceptors([loaderInterceptor])
+    ),
+    ...appStoreProviders,
+    toastrProvider,
     FormValidation,
   ],
   

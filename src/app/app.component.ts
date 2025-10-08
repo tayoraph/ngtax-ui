@@ -4,6 +4,8 @@ import { NgxSonnerToaster } from 'ngx-sonner';
 import { ThemeService } from './core/services/theme.service';
 import { ResponsiveHelperComponent } from './shared/components/responsive-helper/responsive-helper.component';
 import { LoaderComponent } from './core/loader/loader.component';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/Utils/store';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,8 +16,11 @@ import { LoaderComponent } from './core/loader/loader.component';
 export class AppComponent {
   title = '';
   isLoading = true;
-  constructor(public themeService: ThemeService) {
+  constructor(public themeService: ThemeService, private store: Store<AppState>) {
     
+    this.store.subscribe(state => {
+      // console.log('🔁 Store state:', state);
+    });
       // Simulate load
     setTimeout(() => {
       this.isLoading = false;
