@@ -6,6 +6,5 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-error',
   imports: [RouterOutlet,CommonModule],
   templateUrl: './error.component.html',
-    standalone: true,
 })
 export class ErrorComponent {}

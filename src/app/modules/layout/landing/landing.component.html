@@ -2,21 +2,21 @@
   <div class="nav-container">
     <!-- Logo -->
     <div class="logo">
-      <img src="assets/logo.png" alt="Thomas Northman" />
-      <span>TAX NG</span>
+      <img src="assets/logo.png" alt="logo" />
+      <span>TAXNG</span>
     </div>
 
     <!-- Navigation Links -->
     <nav class="nav-links">
       <a routerLink="/about">Service</a>
-      <a routerLink="/international">Learn</a>
-      <a routerLink="/rates">FAQs</a>
+      <a routerLink="dashboard/learn">Learn</a>
+      <a routerLink="/dashboard/FAQs">FAQs</a>
       <!-- <a routerLink="/rates">Developer</a> -->
-      <a routerLink="/contact">Contact</a>
+      <!-- <a routerLink="/contact">Contact</a> -->
     </nav>
 
     <!-- Button -->
-    <button mat-raised-button color="primary" class="nav-cta">
+    <button routerLink="dashboard/calculateTax" mat-raised-button color="primary" class="nav-cta">
       CALCULATE YOUR TAX
     </button>
   </div>
@@ -27,7 +27,7 @@
 <section class="hero-section">
   <div class="hero-container">
     <!-- Left Content -->
-    <div class="hero-content fade-in">
+    <div class="hero-content fade-in ">
       <span class="tag">YOUR SMART TAX CALCULATOR</span>
       <h1>
         Calculate your <span class="highlight">Tax</span><br />
@@ -53,7 +53,7 @@
 <!-- Features Section -->
 <section class="container features-section">
   <h2 class="section-title fade-in">Services</h2>
-  <div class="features">
+  <div class="features ">
     <div class="feature fade-in">
       <img src="https://img.icons8.com/ios-filled/100/calculator.png" alt="Calculator Icon" />
       <h3>Tax Calculation</h3>
@@ -64,22 +64,22 @@
       <h3>Tax Education</h3>
       <p>Have a full understanding of the new tax reform iin Nigeria.</p>
     </div>
-    <div class="feature fade-in" style="animation-delay: 0.6s;">
+    <div class="feature fade-in" style="animation-delay: 0.6s;  text-align: center;">
       <img src="https://img.icons8.com/ios-filled/100/lock.png" alt="Secure Icon" />
       <h3>Developer Integration</h3>
       <p>Your information is safe. We don’t store any of your personal data.</p>
     </div>
   </div>
-  <div class="cta-wrapper fade-in" style="animation-delay: 0.9s;">
-    <a href="#calculator"><button mat-raised-button color="primary" class="cta">Start Calculating</button></a>
-  </div>
+  <!-- <div class="cta-wrapper fade-in" style="animation-delay: 0.9s;">
+    <a routerLink="dashboard/calculateTax"><button mat-raised-button color="primary" class="cta">Start Calculating</button></a>
+  </div> -->
 </section>
 
 <!-- Calculator Section -->
-<section id="calculator" class="container calculator-section fade-in">
+<!-- <section id="calculator" class="container calculator-section fade-in">
   <h2 class="section-title">Tax Calculator</h2>
   <p class="section-subtitle">(Embed your actual calculator here or link to it)</p>
-</section>
+</section> -->
 
 <!-- FAQ Section -->
 <!-- <section class="container faq-section fade-in">

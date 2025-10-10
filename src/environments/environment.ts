@@ -14,7 +14,10 @@ export const environment = {
   getTaxReformByCategory: "tax-reform/category/",// /tax-reform/category/:category
   GetTaxReformByTaxCategory: "tax-reform/tax-category/", // tax-reform/tax-category/:taxCategory → Get by tax type
   getRoles: "taxreform/role",
-  getTaxByRoleAndIncome: 'taxreform/getTaxByRoleAndIncome'
+  getTaxByRoleAndIncome: 'taxreform/getTaxByRoleAndIncome',
+  //learn 
+  learn:'learn'
+  
 
 
 

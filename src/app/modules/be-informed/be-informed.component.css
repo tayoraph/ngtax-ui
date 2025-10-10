@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+button:focus {
+  outline: none;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}

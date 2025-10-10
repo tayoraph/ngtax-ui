@@ -9,7 +9,6 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
   imports: [AngularSvgIconModule, ButtonComponent,CommonModule],
   templateUrl: './error404.component.html',
   styleUrl: './error404.component.css',
-    standalone: true,
 })
 export class Error404Component {
   constructor(private router: Router) {}

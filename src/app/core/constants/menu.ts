@@ -8,14 +8,9 @@ export class Menu {
       items: [
         {
           icon: 'assets/icons/heroicons/outline/chart-pie.svg',
-          label: 'Dashboard',
-          route: '/dashboard',
-          children: [
-            // { label: 'Calculator', route: '/dashboard/calculateTax' },
-            { label: 'Nfts', route: '/dashboard/nfts' }
-
-          ],
-
+          label: 'Home',
+          route: '/',
+         
         },
          {
           icon: 'assets/icons/heroicons/outline/plus.svg',
@@ -25,12 +20,21 @@ export class Menu {
             { label: 'Calculate Tax', route: '/dashboard/calculateTax' },
           ],
         },
-         {
-          icon: 'assets/icons/heroicons/outline/bookmark.svg',
-          label: 'FAQs',
-          route: '/faqs',
+        //  {
+        //   icon: 'assets/icons/heroicons/outline/bookmark.svg',
+        //   label: 'FAQs',
+        //   route: '/dashboard',
+        //   children: [
+        //     { label: 'Top Tax Reform FAQs', route: '/dashboard/topTaxReformFaqs' },
+        //   ],
+        // },
+
+        {
+          icon: 'assets/icons/heroicons/outline/cube.svg',
+          label: 'Learn',
+          route: '/dashboard',
           children: [
-            { label: 'Tax Reform FAQs', route: '/dashboard/calculateTax' },
+            { label: 'Top Tax Reform FAQs', route: '/dashboard/learn' },
           ],
         },
         // {
@@ -54,12 +58,12 @@ export class Menu {
         //     { label: '500', route: '/errors/500' },
         //   ],
         // },
-        {
-          icon: 'assets/icons/heroicons/outline/cube.svg',
-          label: 'Components',
-          route: '/components',
-          children: [{ label: 'Table', route: '/components/table' }],
-        },
+        // {
+        //   icon: 'assets/icons/heroicons/outline/cube.svg',
+        //   label: 'Components',
+        //   route: '/components',
+        //   children: [{ label: 'Table', route: '/components/table' }],
+        // },
       ],
     },
     // {

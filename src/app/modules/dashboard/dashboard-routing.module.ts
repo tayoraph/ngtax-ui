@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
-import { TaxCalculatorComponent } from './TaxCalculator/tax-calculator.component';
+import { TaxCalculatorComponent } from '../TaxCalculator/tax-calculator.component';
+import { TaxpayerFaqComponent } from '../taxpayer-faq/taxpayer-faq.component';
+import { BeInformedComponent } from '../be-informed/be-informed.component';
+import { LearnAccordionComponent } from '../learn/learn-accordion/learn-accordion.component';
 
 const routes: Routes = [
   {
@@ -10,6 +13,12 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'calculateTax', pathMatch: 'full' },
       { path: 'calculateTax', component: TaxCalculatorComponent },
+      { path: 'topTaxReformFaqs', component: TaxpayerFaqComponent },
+      { path: 'beinformed', component: BeInformedComponent },
+      { path: 'learn', component: LearnAccordionComponent },
+
+      
+
       { path: '**', redirectTo: 'errors/404' },
     ],
   },

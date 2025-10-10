@@ -7,28 +7,32 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { AuthState, authReducer } from 'src/app/modules/auth/store/auth.reducer';
 
 import { AuthEffects } from 'src/app/modules/auth/store/auth.effects';
-import { RolesEffects } from 'src/app/modules/dashboard/TaxCalculator/store/roles/roles.effects';
-import { RolesState, rolesReducer } from 'src/app/modules/dashboard/TaxCalculator/store/roles/roles.reducer';
 import { isDevMode } from '@angular/core';
-import { taxReducer, TaxState } from 'src/app/modules/dashboard/TaxCalculator/store/role-tax/role-tax.reducer';
-import { TaxEffects } from 'src/app/modules/dashboard/TaxCalculator/store/role-tax/role.tax-effects';
+import { TaxState, taxReducer } from 'src/app/modules/TaxCalculator/store/role-tax/role-tax.reducer';
+import { TaxEffects } from 'src/app/modules/TaxCalculator/store/role-tax/role.tax-effects';
+import { RolesEffects } from 'src/app/modules/TaxCalculator/store/roles/roles.effects';
+import { RolesState, rolesReducer } from 'src/app/modules/TaxCalculator/store/roles/roles.reducer';
+import { learnReducer, LearnState } from 'src/app/modules/learn/store/learn.reducer';
+import { LearnEffects } from 'src/app/modules/learn/store/learn.effect';
 
 // Define the root state interface
 export interface AppState {
   auth: AuthState;
   roles: RolesState;
-   tax: TaxState;
+ tax: TaxState;
+ learn: LearnState;
 }
 //  Define the ActionReducerMap
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   roles: rolesReducer,
-    tax: taxReducer,
+  tax: taxReducer,
+  learn : learnReducer
 };
 
 // Register Store + Effects as providers
 export const appStoreProviders = [
   provideStore(reducers),
-  provideEffects([AuthEffects, RolesEffects, TaxEffects]),
+  provideEffects([AuthEffects, RolesEffects, TaxEffects, LearnEffects]),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
 ];

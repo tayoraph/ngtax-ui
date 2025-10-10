@@ -105,8 +105,23 @@ export abstract class BaseHttpService {
         }),
           retry(0),
         );
-  
-  
+    }
+
+
+    /***
+   * @param url
+   * @method Patch method
+   * @response returns observable
+   */
+     protected patch<T>(url: string, body : any): Observable<T> {
+      let header = this.constants?.httpHeader()
+    
+        return this.httpClient!.patch(url, body, { headers: header, responseType: 'json'})
+        .pipe(map((result:any) => {
+          return result as T;
+        }),
+          retry(0),
+        );
     }
 
        /***
