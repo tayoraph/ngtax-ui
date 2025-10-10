@@ -1,11 +1,22 @@
+// src/app/components/loader/loader.component.ts
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from 'src/Utils/store';
 
 @Component({
   selector: 'app-loader',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './loader.component.html',
+  template: `
+    <div *ngIf="loader$ | async" class="loader-overlay">
+      <div class="spinner"></div>
+    </div>
+  `,
   styleUrls: ['./loader.component.scss']
 })
-export class LoaderComponent {}
+export class LoaderComponent {
+  loader$: Observable<boolean>;
+
+  constructor(private store: Store<AppState>) {
+    this.loader$ = store.pipe(select(state => state.loader));
+  }
+}

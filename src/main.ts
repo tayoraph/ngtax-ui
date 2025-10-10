@@ -9,9 +9,9 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular
 import { provideRouter } from '@angular/router';
 import { FormValidation } from './Utils/formsValidations/formValidation';
 import { appStoreProviders, reducers } from './Utils/store';
-import { loaderInterceptor } from './app/core/interceptor/loader.interceptor';
 import { AppRoutingModule } from './app/app.routes';
 import { toastrProvider } from './Utils/config/toastr.config';
+import { LoaderInterceptor } from './app/core/interceptor/loader.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -23,9 +23,15 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [importProvidersFrom(BrowserModule, AppRoutingModule), provideAnimations(),
-    provideHttpClient(
-          withInterceptors([loaderInterceptor])
-    ),
+    // provideHttpClient(
+    //       withInterceptors([LoaderInterceptor])
+    // ),
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    },
     ...appStoreProviders,
     toastrProvider,
     FormValidation,

@@ -3,7 +3,7 @@ import { MenuItem } from '../models/menu.model';
 export class Menu {
   public static pages: MenuItem[] = [
     {
-      group: 'Base',
+      group: 'Menu',
       separator: false,
       items: [
         {
@@ -20,14 +20,6 @@ export class Menu {
             { label: 'Calculate Tax', route: '/dashboard/calculateTax' },
           ],
         },
-        //  {
-        //   icon: 'assets/icons/heroicons/outline/bookmark.svg',
-        //   label: 'FAQs',
-        //   route: '/dashboard',
-        //   children: [
-        //     { label: 'Top Tax Reform FAQs', route: '/dashboard/topTaxReformFaqs' },
-        //   ],
-        // },
 
         {
           icon: 'assets/icons/heroicons/outline/cube.svg',

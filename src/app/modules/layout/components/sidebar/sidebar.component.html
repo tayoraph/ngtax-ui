@@ -9,8 +9,10 @@
       <div class="flex items-center" *ngIf="menuService.showSideBar">
         <a
           (click)="toggleSidebar()"
-          class="bg-primary flex cursor-pointer items-center justify-center rounded-sm p-2 focus:outline-hidden focus:ring-1">
-          <svg-icon src="assets/icons/logo.svg"> </svg-icon>
+          class=" flex cursor-pointer items-center justify-center rounded-sm p-2 focus:outline-hidden focus:ring-1">
+          <!-- <svg-icon src="assets/icons/logo.svg"> </svg-icon> -->
+          <img src="assets/logo.png" width="30">
+
         </a>
         <b class="text-foreground ps-2 ml-1 grow text-sm font-bold">
           {{ appJson.displayName }}
@@ -35,7 +37,7 @@
     <!-- Version -->
     <a
       target="_blank"
-      href=" /taxng"
+      
       class="-sm hover:bg-card group flex h-9 cursor-pointer items-center justify-start p-2">
       <svg-icon
         src="assets/icons/heroicons/outline/information-circle.svg"

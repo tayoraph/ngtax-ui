@@ -14,6 +14,7 @@ import { RolesEffects } from 'src/app/modules/TaxCalculator/store/roles/roles.ef
 import { RolesState, rolesReducer } from 'src/app/modules/TaxCalculator/store/roles/roles.reducer';
 import { learnReducer, LearnState } from 'src/app/modules/learn/store/learn.reducer';
 import { LearnEffects } from 'src/app/modules/learn/store/learn.effect';
+import { loaderReducer, LoaderState } from 'src/app/core/loader/store/loader.reducer';
 
 // Define the root state interface
 export interface AppState {
@@ -21,13 +22,16 @@ export interface AppState {
   roles: RolesState;
  tax: TaxState;
  learn: LearnState;
+loader: LoaderState;
 }
 //  Define the ActionReducerMap
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   roles: rolesReducer,
   tax: taxReducer,
-  learn : learnReducer
+  learn : learnReducer,
+  loader: loaderReducer
+  
 };
 
 // Register Store + Effects as providers
