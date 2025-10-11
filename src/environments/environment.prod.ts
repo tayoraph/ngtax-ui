@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  BaseUrl: "http://localhost:7777/",
+  BaseUrl: "https://taxng.com/elapi/",
   getTaxCategory: "tax-data/categories",
   getTaxRoles: "tax-data/roles",
   getTaxByCategory: "tax-category",
