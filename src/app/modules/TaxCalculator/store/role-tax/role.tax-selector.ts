@@ -18,3 +18,7 @@ export const selectTaxError = createSelector(
   selectTaxState,
   (state: TaxState) => state.error
 );
+
+export function selectAllCategories(selectAllCategories: any) {
+  throw new Error('Function not implemented.');
+}

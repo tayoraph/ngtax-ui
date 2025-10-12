@@ -20,17 +20,17 @@ export class TaxReformEffects {
   //   )
   // );
 
-  loadByCategory$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(TaxReformActions.loadByCategory),
-      mergeMap(({ category }) =>
-        this.api.getByCategory(category).pipe(
-          map((data) => TaxReformActions.loadByCategorySuccess({ data })),
-          catchError((error) => of(TaxReformActions.loadByCategoryFailure({ error: error.message })))
-        )
-      )
-    )
-  );
+  // loadByCategory$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(TaxReformActions.loadByCategory),
+  //     mergeMap(({ category }) =>
+  //       this.api.getByCategory(category).pipe(
+  //         map((data) => TaxReformActions.loadByCategorySuccess({ data })),
+  //         catchError((error) => of(TaxReformActions.loadByCategoryFailure({ error: error.message })))
+  //       )
+  //     )
+  //   )
+  // );
 
   loadByRole$ = createEffect(() =>
     this.actions$.pipe(

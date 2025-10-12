@@ -71,7 +71,8 @@
             <label class="block text-gray-700 font-medium mb-2">Tax Category</label>
             <select formControlName="category"
               class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-              <option *ngFor="let c of allTaxCategories" [value]="c">{{ c }}</option>
+              <option *ngFor="let c of categories | async" [value]="c">{{ c }}</option>
+              
             </select>
           </div>
           <div>

@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { BaseHttpService } from 'src/Utils/BaseHttp/base-http.service';
 import { ApiResponse } from 'src/Utils/interfaces/apiResponse';
 import { RoleTax } from './models/role-tax.model';
+import { SubCategoryData } from './models/tax-category-model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,11 +35,11 @@ export class TaxReformService extends BaseHttpService {
     return this.get<TaxReformData[]>(con);
   }
 
-  getByCategory(category: string): Observable<TaxReformData> {
-    let con = environment.BaseUrl + environment.getTaxByCategory+ category;
+  // getByCategory(category: string): Observable<TaxReformData> {
+  //   let con = environment.BaseUrl + environment.getTaxByCategory+ category;
 
-    return this.get<TaxReformData>(con);
-  }
+  //   return this.get<TaxReformData>(con);
+  // }
 
   getByRole(role: string): Observable<TaxRoleDetails> {
     let con = environment.BaseUrl + environment.getTaxByCategory+ role;
@@ -69,4 +70,20 @@ export class TaxReformService extends BaseHttpService {
 
     return this.get<ApiResponse<RoleTax>>(con);
   }
+
+  //#region tax category
+  
+ getTaxCategories(): Observable<SubCategoryData[]> {
+    let con = environment.BaseUrl + environment.getAllTaxcategories;
+    debugger
+    return this.get<SubCategoryData[]>(con);
+  }
+
+  getByCategory(categoryType: 'Individuals' | 'Businesses'): Observable<SubCategoryData[]> {
+    let con = environment.BaseUrl + environment.getByCategoryType +  categoryType;
+
+    return this.get<SubCategoryData[]>(con);
+  }
+
+  //
 }

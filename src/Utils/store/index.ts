@@ -15,6 +15,8 @@ import { RolesState, rolesReducer } from 'src/app/modules/TaxCalculator/store/ro
 import { learnReducer, LearnState } from 'src/app/modules/learn/store/learn.reducer';
 import { LearnEffects } from 'src/app/modules/learn/store/learn.effect';
 import { loaderReducer, LoaderState } from 'src/app/core/loader/store/loader.reducer';
+import { taxCategoryReducer, TaxcategoryState } from 'src/app/modules/TaxCalculator/store/tax-categories/tax-category.reducer';
+import { TaxCategoryEffects } from 'src/app/modules/TaxCalculator/store/tax-categories/tax-category.effects';
 
 // Define the root state interface
 export interface AppState {
@@ -23,6 +25,7 @@ export interface AppState {
  tax: TaxState;
  learn: LearnState;
 loader: LoaderState;
+taxCategory: TaxcategoryState
 }
 //  Define the ActionReducerMap
 export const reducers: ActionReducerMap<AppState> = {
@@ -30,13 +33,14 @@ export const reducers: ActionReducerMap<AppState> = {
   roles: rolesReducer,
   tax: taxReducer,
   learn : learnReducer,
-  loader: loaderReducer
+  loader: loaderReducer,
+  taxCategory: taxCategoryReducer
   
 };
 
 // Register Store + Effects as providers
 export const appStoreProviders = [
   provideStore(reducers),
-  provideEffects([AuthEffects, RolesEffects, TaxEffects, LearnEffects]),
+  provideEffects([AuthEffects, RolesEffects, TaxEffects, LearnEffects,TaxCategoryEffects]),
   provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
 ];

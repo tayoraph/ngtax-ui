@@ -19,9 +19,15 @@ import * as fromRoles from './store/roles/roles.selector';
 import { filter, Observable, take } from 'rxjs';
 import { RoleTax } from './models/role-tax.model';
 
+
 import * as TaxSelectors from './store/role-tax/role.tax-selector';
 import * as TaxActions from './store/role-tax/role.tax.action';
 import { SuccessModalComponent } from 'src/Utils/modals/successModal/success-modal.component';
+
+
+import * as TaxCategorySelectors from './store/tax-categories/tax-category.selector';
+import * as TaxCategoriesActions from './store/tax-categories/tax-category.actions';
+import { selectAllCategories } from './store/tax-categories/tax-category.selector';
 
 @Component({
   selector: 'app-tax-calculator',
@@ -85,6 +91,11 @@ export class TaxCalculatorComponent implements OnInit{
 
   formattedIncome: string = '';
 
+
+  /// taxcategory start here 
+  categories: any
+  // categories$ = this.store.select(TaxCategorySelectors.selectAllCategories);
+
  private taxService = inject(TaxReformService);
 
   constructor(private fb: FormBuilder, private store: Store) {
@@ -97,12 +108,15 @@ export class TaxCalculatorComponent implements OnInit{
 
      //this.Roles = this.extractAllRoles(this.taxData);
      this.fetchRoles();
+
+       this.store.dispatch(TaxCategoriesActions.loadTaxCategories());
   }
 
   /////
 
     ngOnInit(): void {
     this.store.dispatch(TaxReformActions.loadAllTaxData());
+     this.fetchTaxCatgeories()
   }
 
   onSelectCategory(category: string) {
@@ -153,32 +167,12 @@ onIncomeInput(event: Event) {
   }
 //#endregion
 
-  ///
 
-  // extractAllRoles(data: any): string[] {
-  //   const roles: string[] = [];
 
-  //   // Extract roles from Individuals
-  //   for (let key in data.Individuals) {
-  //     if (data.Individuals[key].Roles) {
-  //       roles.push(...data.Individuals[key].Roles);
-  //     }
-  //   }
-
-  //   // Extract roles from Businesses
-  //   for (let key in data.Businesses) {
-  //     if (data.Businesses[key].Roles) {
-  //       roles.push(...data.Businesses[key].Roles);
-  //     }
-  //   }
-
-  //   // Remove duplicates and return
-  //   return [...new Set(roles)];
+  // get categories(): string[] {
+  //   const entityType = this.taxForm.value.entityType as EntityType;
+  //   return Object.keys(this.taxData[entityType] || {});
   // }
-  get categories(): string[] {
-    const entityType = this.taxForm.value.entityType as EntityType;
-    return Object.keys(this.taxData[entityType] || {});
-  }
 
  get roles(): string[] {
   const entityType = this.taxForm.value.entityType as EntityType;
@@ -211,26 +205,7 @@ onIncomeInput(event: Event) {
     this.taxResult.set((taxRate / 100) * income);
   }
 
-// calculateByTitle() {
-//   const { role, income } = this.titleForm.value;
 
-//   // Flatten all roles from Individuals and Businesses
-//   const allRoles: string[] = Object.values(this.taxData.Individuals)
-//     .flatMap(c => c.Roles.map(r => typeof r === 'string' ? r : r.title))
-//     .concat(
-//       Object.values(this.taxData.Businesses)
-//         .flatMap(c => c.Roles.map(r => typeof r === 'string' ? r : r.title))
-//     );
-
-//   const found = allRoles.find(r => r.toLowerCase() === role.toLowerCase());
-
-//   if (found) {
-//     const tax = Number(income) * 0.05; // Apply 5% tax
-//     this.taxResult.set(tax);
-//   } else {
-//     this.taxResult.set(0);
-//   }
-// }
 
 
 
@@ -282,6 +257,7 @@ onIncomeInput(event: Event) {
     error(err) {
         console.log(err)
     },})
+    
   }
 
   //#endregion
@@ -371,6 +347,29 @@ showTaxResult(result: any, income:number) {
 
   this.showModal = true;
 }
+
+  //#endregion
+
+
+
+  //#region Calculate by Tax category 
+
+  fetchTaxCatgeories(){
+    let user = this;
+
+// this.store.dispatch(TaxActions.loadTaxByType({ categoryType: 'Individuals' }));
+
+
+///use selctor to getcategories 
+this.store.select(selectAllCategories).
+subscribe({next(value:any) {
+    user.categories =value?.data
+},
+error(err) {
+    
+},})
+// blueCollar$ = this.store.select(selectCategoryByName('BlueCollar'));
+  }
 
   //#endregion
 } 

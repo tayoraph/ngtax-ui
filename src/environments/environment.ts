@@ -16,7 +16,12 @@ export const environment = {
   getRoles: "taxreform/role",
   getTaxByRoleAndIncome: 'taxreform/getTaxByRoleAndIncome',
   //learn 
-  learn:'learn'
+  learn:'learn',
+
+  // tax categories 
+  getAllTaxcategories : 'tax-categories',
+  getByCategoryType : 'tax-categories/',
+
   
 
 
