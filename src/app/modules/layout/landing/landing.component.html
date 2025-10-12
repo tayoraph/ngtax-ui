@@ -8,10 +8,10 @@
 
     <!-- Navigation Links -->
     <nav class="nav-links">
-      <a routerLink="/about">Service</a>
+      <a routerLink="/about">Services</a>
       <a routerLink="dashboard/learn">Learn</a>
       <a routerLink="/dashboard/FAQs">FAQs</a>
-      <!-- <a routerLink="/rates">Developer</a> -->
+      <a routerLink="dashboard/coming-soon">Developer</a>
       <!-- <a routerLink="/contact">Contact</a> -->
     </nav>
 
@@ -51,29 +51,55 @@
 
 
 <!-- Features Section -->
-<section class="container features-section">
-  <h2 class="section-title fade-in">Services</h2>
-  <div class="features ">
-    <div class="feature fade-in">
-      <img src="https://img.icons8.com/ios-filled/100/calculator.png" alt="Calculator Icon" />
-      <h3>Tax Calculation</h3>
-      <p>Our tool ensures you get the most accurate estimate of your tax liability.</p>
+<section class="container mx-auto px-4 py-12 text-center">
+  <h1 class=" text-3xl font-bold mb-10 fade-in highlight">Services</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="feature fade-in bg-white/10 p-6 rounded-lg backdrop-blur-md border border-white/20">
+      <img
+        src="https://img.icons8.com/ios-filled/100/calculator.png"
+        alt="Calculator Icon"
+        class="mx-auto mb-4"
+      />
+      <h3 class="text-xl font-semibold mb-2">Tax Calculation</h3>
+      <p class="text-sm text-primary-200">
+        Our tool ensures you get the most accurate estimate of your tax liability.
+      </p>
     </div>
-    <div class="feature fade-in" style="animation-delay: 0.3s;">
-      <img src="https://img.icons8.com/ios-filled/100/easy.png" alt="Simple Icon" />
-      <h3>Tax Education</h3>
-      <p>Have a full understanding of the new tax reform iin Nigeria.</p>
+
+    <div
+      class="feature fade-in bg-white/10 p-6 rounded-lg backdrop-blur-md border border-white/20"
+      style="animation-delay: 0.3s;"
+    >
+      <img
+        src="https://img.icons8.com/ios-filled/100/easy.png"
+        alt="Simple Icon"
+        class="mx-auto mb-4"
+      />
+      <h3 class="text-xl font-semibold mb-2">Tax Education</h3>
+      <p class="text-sm text-primary-200">
+        Have a full understanding of the new tax reform in Nigeria.
+      </p>
     </div>
-    <div class="feature fade-in" style="animation-delay: 0.6s;  text-align: center;">
-      <img src="https://img.icons8.com/ios-filled/100/lock.png" alt="Secure Icon" />
-      <h3>Developer Integration</h3>
-      <p>Your information is safe. We don’t store any of your personal data.</p>
+
+    <div
+      routerLink="dashboard/coming-soon"
+      class="feature fade-in cursor-pointer bg-white/10 p-6 rounded-lg backdrop-blur-md border border-white/20"
+      style="animation-delay: 0.6s;"
+    >
+      <img
+        src="https://img.icons8.com/ios-filled/100/lock.png"
+        alt="Secure Icon"
+        class="mx-auto mb-4"
+      />
+      <h3 class="text-xl font-semibold mb-2">Developer Integration</h3>
+      <p class="text-sm text-primary-200">
+        Integrate with our Tax calculation Apis for your custom application with with little or no fee.
+      </p>
     </div>
   </div>
-  <!-- <div class="cta-wrapper fade-in" style="animation-delay: 0.9s;">
-    <a routerLink="dashboard/calculateTax"><button mat-raised-button color="primary" class="cta">Start Calculating</button></a>
-  </div> -->
 </section>
+
 
 <!-- Calculator Section -->
 <!-- <section id="calculator" class="container calculator-section fade-in">

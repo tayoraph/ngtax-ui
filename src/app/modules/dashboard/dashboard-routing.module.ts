@@ -5,6 +5,7 @@ import { TaxCalculatorComponent } from '../TaxCalculator/tax-calculator.componen
 import { TaxpayerFaqComponent } from '../taxpayer-faq/taxpayer-faq.component';
 import { BeInformedComponent } from '../be-informed/be-informed.component';
 import { LearnAccordionComponent } from '../learn/learn-accordion/learn-accordion.component';
+import { ComingSoonComponent } from '../coming-soon/coming-soon.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
       { path: 'topTaxReformFaqs', component: TaxpayerFaqComponent },
       { path: 'beinformed', component: BeInformedComponent },
       { path: 'learn', component: LearnAccordionComponent },
-
+      { path: 'coming-soon', component: ComingSoonComponent },
       
 
       { path: '**', redirectTo: 'errors/404' },
