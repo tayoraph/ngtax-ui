@@ -39,4 +39,37 @@ export class TaxCategoryEffects {
       )
     )
   );
+
+
+
+    // Calculate tax  by category , role, Income
+  CalculateTaxbyCategoryRoleIncome$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaxActions.calculateTaxBycategoryNameRoleAndIncomeAction),
+      mergeMap(({calculateReq}) =>
+        this.taxService.calculateTaxbyCategoryRoleIncome(calculateReq).pipe(
+          map((calcuateTaxByRoleIncomeAndcategory: any) => 
+            TaxActions.calculateTaxBycategoryNameRoleAndIncomeSuccessAction({ calcuateTaxByRoleIncomeAndcategory })
+          ),
+          catchError((error) => of(TaxActions.calculateTaxBycategoryNameRoleAndIncomeFailureAction({ error })))
+        )
+      )
+    )
+  );
+
+
+   //alculate tax by category , role and incomme and UserType
+  calculateTaxBycategoryNameRoleuserType$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaxActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeAction),
+      mergeMap(({calculateReq}) =>
+        this.taxService.calculateTaxBycategoryNameRoleuserType(calculateReq).pipe(
+          map((calcuateTaxByRoleIncomeUsertypeAndcategory: any) => 
+            TaxActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeSuccessAction({ calcuateTaxByRoleIncomeUsertypeAndcategory })
+          ),
+          catchError((error) => of(TaxActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeFailureAction({ error })))
+        )
+      )
+    )
+  );
 }

@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { BaseHttpService } from 'src/Utils/BaseHttp/base-http.service';
 import { ApiResponse } from 'src/Utils/interfaces/apiResponse';
 import { RoleTax } from './models/role-tax.model';
-import { SubCategoryData } from './models/tax-category-model';
+import { SubCategoryData, taxCalculationBytaxcategoryRoleandIncome } from './models/tax-category-model';
 
 @Injectable({
   providedIn: 'root',
@@ -75,7 +75,6 @@ export class TaxReformService extends BaseHttpService {
   
  getTaxCategories(): Observable<SubCategoryData[]> {
     let con = environment.BaseUrl + environment.getAllTaxcategories;
-    debugger
     return this.get<SubCategoryData[]>(con);
   }
 
@@ -83,6 +82,16 @@ export class TaxReformService extends BaseHttpService {
     let con = environment.BaseUrl + environment.getByCategoryType +  categoryType;
 
     return this.get<SubCategoryData[]>(con);
+  }
+
+  calculateTaxbyCategoryRoleIncome(req:taxCalculationBytaxcategoryRoleandIncome): Observable<ApiResponse> {
+    let con = environment.BaseUrl + environment.CalculateTaxbyCategoryRoleIncome;
+    return this.post<ApiResponse>(con,req);
+  }
+
+   calculateTaxBycategoryNameRoleuserType(req:taxCalculationBytaxcategoryRoleandIncome): Observable<ApiResponse> {
+    let con = environment.BaseUrl + environment.calculateTaxBycategoryNameRoleuserType;
+    return this.post<ApiResponse>(con,req);
   }
 
   //

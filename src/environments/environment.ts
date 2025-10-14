@@ -21,12 +21,9 @@ export const environment = {
   // tax categories 
   getAllTaxcategories : 'tax-categories',
   getByCategoryType : 'tax-categories/',
-
+  CalculateTaxbyCategoryRoleIncome :"taxreform/TaxCalculationByTaxNameRoleAndIncomeDto",
+  calculateTaxBycategoryNameRoleuserType :'taxreform/TaxCalculationByTagnameRoleaEntityndIncomeInput'
   
-
-
-
-
 };
 
 /*

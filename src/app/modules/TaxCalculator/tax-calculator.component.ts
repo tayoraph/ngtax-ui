@@ -27,7 +27,8 @@ import { SuccessModalComponent } from 'src/Utils/modals/successModal/success-mod
 
 import * as TaxCategorySelectors from './store/tax-categories/tax-category.selector';
 import * as TaxCategoriesActions from './store/tax-categories/tax-category.actions';
-import { selectAllCategories } from './store/tax-categories/tax-category.selector';
+import {  calculateTaxBycategoryNameRoleAndIncomeSelector, calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector, selectTaxCategories } from './store/tax-categories/tax-category.selector';
+import { taxCalculationBytaxcategoryRoleandIncome } from './models/tax-category-model';
 
 @Component({
   selector: 'app-tax-calculator',
@@ -36,7 +37,7 @@ import { selectAllCategories } from './store/tax-categories/tax-category.selecto
   templateUrl: './tax-calculator.component.html',
 })
 export class TaxCalculatorComponent implements OnInit{
-  taxForm: FormGroup;
+  taxFormByEntity: FormGroup;
   titleForm: FormGroup;
   categoryForm: FormGroup;
 
@@ -100,11 +101,11 @@ export class TaxCalculatorComponent implements OnInit{
 
   constructor(private fb: FormBuilder, private store: Store) {
     // Entity-based form
-    this.taxForm = this.fb.group({ entityType: ['Individuals'], category: [''], role: [''], income: [0] });
+    this.taxFormByEntity = this.fb.group({ userType: ['Individuals'], category: [''], role: [''], income: [0] });
     // By role form
     this.titleForm = this.fb.group({ role: [''], income: [null] });
     // By category form
-    this.categoryForm = this.fb.group({ category: [''], income: [0] });
+    this.categoryForm = this.fb.group({ category: [''], income: [0], role: [''] });
 
      //this.Roles = this.extractAllRoles(this.taxData);
      this.fetchRoles();
@@ -169,79 +170,12 @@ onIncomeInput(event: Event) {
 
 
 
-  // get categories(): string[] {
-  //   const entityType = this.taxForm.value.entityType as EntityType;
-  //   return Object.keys(this.taxData[entityType] || {});
-  // }
-
- get roles(): string[] {
-  const entityType = this.taxForm.value.entityType as EntityType;
-  const category = this.taxForm.value.category;
-  if (!category) return [];
-
-  const cat = this.taxData[entityType][category];
-  if (!cat || !cat.Roles) return [];
-
-  // Map Role objects to strings if necessary
-  return cat.Roles.map(role => {
-    if (typeof role === 'string') return role;
-    return role.title; // Role object, extract title
-  });
-}
-
-
-  // Entity-based calculation
-  calculateByEntity() {
-    const income = Number(this.taxForm.value.income);
-    const entityType = this.taxForm.value.entityType;
-    let taxRate = 0;
-
-    if (entityType === 'Individuals') {
-      taxRate = income < 500_000 ? 5 : income < 5_000_000 ? 10 : 15;
-    } else {
-      taxRate = income < 100_000_000 ? 20 : 30;
-    }
-
-    this.taxResult.set((taxRate / 100) * income);
-  }
 
 
 
 
 
-  // Calculation by Tax Category
-  calculateByCategory() {
-    const { category, income } = this.categoryForm.value;
-    const allCategories = { ...this.taxData.Individuals, ...this.taxData.Businesses };
-    const cat = allCategories[category];
-    this.taxResult.set(cat?.TaxCategories.includes('PIT') ? Number(income) * 0.05 : 0);
-  }
 
-  calculate() {
-    switch (this.calculationMode) {
-      case 'byTitle': this.onCalculate(); break;
-      case 'byCategory': this.calculateByCategory(); break;
-      default: this.calculateByEntity();
-    }
-  }
-
-  public calculateTax() {
-  const income = Number(this.taxForm.value.income);
-  const entityType = this.taxForm.value.entityType;
-
-  let taxRate = 0;
-
-  if (entityType === 'Individuals') {
-    if (income < 500_000) taxRate = 5;
-    else if (income < 5_000_000) taxRate = 10;
-    else taxRate = 15;
-  } else {
-    if (income < 100_000_000) taxRate = 20;
-    else taxRate = 30;
-  }
-
-  this.taxResult.set((taxRate / 100) * income);
-}
 
 
 //#region Fetch roles 
@@ -264,32 +198,6 @@ onIncomeInput(event: Event) {
 
 //#region ole tax plus income 
 
-//   /////role tax plus income 
-//  onCalculate() {
-//    let user = this
-//     const { role, income } = this.titleForm.value;
-//     console.log(role)
-//     console.log(income)
-
-//     if (role && income > 0) {
-//       this.store.dispatch(TaxActions.loadTaxByRole({ role: role, income: income }));
-//        this.store.select(TaxSelectors.selectTaxData).subscribe({next(value:any) {
-//         console.log(value)
-//         if(value.statusCode == 200)
-//          user.showTaxResult(value.data);
-//         },
-//         error(err) {
-//             console.log(err)
-//         }});
-//        this.store.select(TaxSelectors.selectTaxError).subscribe({next(value) {
-//         console.log(value)
-//         // user.taxResult.set(value);
-//         },
-//         error(err) {
-//             console.log(err)
-//         }});
-//     }
-//   }
 
   onCalculate() {
      let user = this
@@ -356,20 +264,71 @@ showTaxResult(result: any, income:number) {
 
   fetchTaxCatgeories(){
     let user = this;
-
-// this.store.dispatch(TaxActions.loadTaxByType({ categoryType: 'Individuals' }));
-
-
-///use selctor to getcategories 
-this.store.select(selectAllCategories).
-subscribe({next(value:any) {
-    user.categories =value?.data
-},
-error(err) {
-    
-},})
-// blueCollar$ = this.store.select(selectCategoryByName('BlueCollar'));
+      ///use selctor to getcategories 
+      this.store.select(selectTaxCategories).
+      subscribe({next(value:any) {
+          user.categories =value?.data
+      },
+      error(err) {
+          console.log(err)
+      },})
   }
 
+
+  calculateTaxBycategoryNameRoleAndIncome(){
+    let value : taxCalculationBytaxcategoryRoleandIncome = {
+      role: this.categoryForm.get('role')?.value,
+      taxName: this.categoryForm.get('category')?.value,
+      incomeOrTurnover: Number(this.categoryForm.get('income')?.value)
+    }
+
+    this.store.dispatch(TaxCategoriesActions.calculateTaxBycategoryNameRoleAndIncomeAction({calculateReq:value}))
+    this.store.select(calculateTaxBycategoryNameRoleAndIncomeSelector)
+          .pipe(
+            filter((data:any) => !!data && data.statusCode === 200), // Wait for valid API response
+            take(1)
+          )
+          .subscribe((data) => {
+            this.showTaxByCategoryResult(data.data,value.incomeOrTurnover);
+     });
+  }
+
+
+  showTaxByCategoryResult(result: any, income:number) {
+    this.modalType = result.error ? 'error' : 'success';
+    this.modalTitle = result.error ? 'Oops!' : 'Tax Result';
+    this.modalMessage = result.error
+      ? result.error
+      : ` Annual Tax for category "${result['Tax Category']}" is ₦${result['Amount'].toLocaleString()}`;
+    // Optionally pass all result details to table
+    this.modalData = result.error ? null : result
+    this.showModal = true;
+  }
   //#endregion
+
+
+
+//#region calculate tax by Role Entity , category and income 
+  calculateTaxBycategoryNameRoleEntityAndIncome(){
+    let value : taxCalculationBytaxcategoryRoleandIncome = {
+      role: this.taxFormByEntity.get('role')?.value,
+      taxName: this.taxFormByEntity.get('category')?.value,
+      incomeOrTurnover: Number(this.taxFormByEntity.get('income')?.value),
+      userType: this.taxFormByEntity.get('userType')?.value,
+
+    }
+debugger
+    this.store.dispatch(TaxCategoriesActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeAction({calculateReq:value}))
+    this.store.select(calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector)
+          .pipe(
+            filter((data:any) => !!data && data.statusCode === 200), // Wait for valid API response
+            take(1)
+          )
+          .subscribe((data) => {
+            this.showTaxByCategoryResult(data.data,value.incomeOrTurnover);
+     });
+  }
+
+//#endregion
+
 } 

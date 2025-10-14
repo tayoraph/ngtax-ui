@@ -29,3 +29,10 @@ export interface SubCategoryData {
   TurnoverRange?: string;   // for Businesses
   TaxCategories: TaxItem[];
 }
+
+export interface  taxCalculationBytaxcategoryRoleandIncome {
+  role: string;
+  taxName: string;
+  incomeOrTurnover: number;
+  userType?: string;
+}

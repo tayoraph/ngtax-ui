@@ -1,24 +1,32 @@
 import { createReducer, on } from '@ngrx/store';
-import * as TaxActions from './tax-category.actions';
+import * as TaxcategoriesActions from './tax-category.actions';
 import { SubCategoryData } from '../../models/tax-category-model';
+import { ApiResponse } from 'src/Utils/interfaces/apiResponse';
 
 export interface TaxcategoryState {
   categories: SubCategoryData[];
+  calcuateTaxByRoleIncomeAndcategory: any;
   loading: boolean;
   error: any;
+  calcuateTaxByRoleIncomeUsertypeAndcategory: any
 }
 
-export const initialState: TaxcategoryState = {
+export const initialTaxcategoryState: TaxcategoryState = {
   categories: [],
   loading: false,
   error: null,
+  calcuateTaxByRoleIncomeAndcategory: null,
+  calcuateTaxByRoleIncomeUsertypeAndcategory: undefined
 };
 
+// Feature key (used when registering reducer)
+export const taxFeatureKey = 'taxCategory'; // this must match the what is in appstate 
+
 export const taxCategoryReducer = createReducer(
-  initialState,
-  on(TaxActions.loadTaxCategories, (state) => ({ ...state, loading: true })),
- on(TaxActions.loadTaxCategoriesSuccess, (state, { categories }) => {
-  console.log('🧾 Categories in Reducer:', categories); // TEMPORARY for debugging
+  initialTaxcategoryState,
+  on(TaxcategoriesActions.loadTaxCategories, (state) => ({ ...state, loading: true })),
+ on(TaxcategoriesActions.loadTaxCategoriesSuccess, (state, { categories }) => {
+  // console.log('🧾 Categories in Reducer:', categories); // TEMPORARY for debugging
   return {
     ...state,
     loading: false,
@@ -26,20 +34,45 @@ export const taxCategoryReducer = createReducer(
   };
 }),
 
-  on(TaxActions.loadTaxCategoriesFailure, (state, { error }) => ({
+  on(TaxcategoriesActions.loadTaxCategoriesFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error,
   })),
-  on(TaxActions.loadTaxByType, (state) => ({ ...state,})),
-  on(TaxActions.loadTaxByTypeSuccess, (state, { categories }) => ({
+  on(TaxcategoriesActions.loadTaxByType, (state) => ({ ...state,})),
+  on(TaxcategoriesActions.loadTaxByTypeSuccess, (state, { categories }) => ({
     ...state,
     
     categories,
   })),
-  on(TaxActions.loadTaxByTypeFailure, (state, { error }) => ({
+  on(TaxcategoriesActions.loadTaxByTypeFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error,
-  }))
+  })),
+
+  ///////calculate tax by category , role and incomem
+  on(TaxcategoriesActions.calculateTaxBycategoryNameRoleAndIncomeAction, (state) => ({ ...state})),
+  on(TaxcategoriesActions.calculateTaxBycategoryNameRoleAndIncomeSuccessAction, (state, { calcuateTaxByRoleIncomeAndcategory }) => ({
+    ...state,
+    calcuateTaxByRoleIncomeAndcategory,
+  })),
+  on(TaxcategoriesActions.calculateTaxBycategoryNameRoleAndIncomeFailureAction, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+
+   ///////calculate tax by category , role and incomme and UserType
+  on(TaxcategoriesActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeAction, (state) => ({ ...state})),
+  on(TaxcategoriesActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeSuccessAction, (state, { calcuateTaxByRoleIncomeUsertypeAndcategory }) => ({
+    ...state,
+    calcuateTaxByRoleIncomeUsertypeAndcategory,
+  })),
+  on(TaxcategoriesActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeFailureAction, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
 );

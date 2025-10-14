@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { SubCategoryData } from '../../models/tax-category-model';
+import { SubCategoryData, taxCalculationBytaxcategoryRoleandIncome } from '../../models/tax-category-model';
+import { ApiResponse } from 'src/Utils/interfaces/apiResponse';
 
 // Load all categories
 export const loadTaxCategories = createAction('[Tax] Load Tax Categories');
@@ -17,6 +18,8 @@ export const loadTaxByType = createAction(
   '[Tax] Load Tax By Type',
   props<{ categoryType: 'Individuals' | 'Businesses' }>()
 );
+
+
 export const loadTaxByTypeSuccess = createAction(
   '[Tax] Load Tax By Type Success',
   props<{ categories: SubCategoryData[] }>()
@@ -25,3 +28,42 @@ export const loadTaxByTypeFailure = createAction(
   '[Tax] Load Tax By Type Failure',
   props<{ error: any }>()
 );
+
+
+
+///////calculate tax by category , role and incomem
+
+export const calculateTaxBycategoryNameRoleAndIncomeAction = createAction(
+  '[Tax] calculate Tax By category Name Role And Income',
+  props<{ calculateReq: taxCalculationBytaxcategoryRoleandIncome }>()
+);
+
+
+export const calculateTaxBycategoryNameRoleAndIncomeSuccessAction = createAction(
+  '[Tax] calculate Tax By category Name Role And Income Success',
+  props<{ calcuateTaxByRoleIncomeAndcategory: ApiResponse }>()
+);
+export const calculateTaxBycategoryNameRoleAndIncomeFailureAction = createAction(
+  '[Tax] calculate Tax By category Name Role And Income Failure',
+  props<{ error: any }>()
+);
+
+
+
+///////calculate tax by category , role and incomme and UserType
+
+export const calculateTaxBycategoryNameRoleuserTypeAndIncomeAction = createAction(
+  '[Tax] calculate Tax By category Name Role user type And Income',
+  props<{ calculateReq: taxCalculationBytaxcategoryRoleandIncome }>()
+);
+
+
+export const calculateTaxBycategoryNameRoleuserTypeAndIncomeSuccessAction = createAction(
+  '[Tax] calculate Tax By category Name Role user type And Income Success',
+  props<{ calcuateTaxByRoleIncomeUsertypeAndcategory: ApiResponse }>()
+);
+export const calculateTaxBycategoryNameRoleuserTypeAndIncomeFailureAction = createAction(
+  '[Tax] calculate Tax By category Name Role user tpe And Income Failure',
+  props<{ error: any }>()
+);
+
