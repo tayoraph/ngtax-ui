@@ -40,7 +40,7 @@ export class TaxCalculatorComponent implements OnInit{
   taxFormByEntity: FormGroup;
   titleForm: FormGroup;
   categoryForm: FormGroup;
-  calculationMode: 'byTitle' | 'byCategory' | 'byEntity' = 'byTitle';
+  calculationMode: 'byTitle' | 'byCategory' | 'byEntity' = 'byEntity';
   Roles: Role[] = [];
   errorMessage = signal<string | null>(null);
   /////
