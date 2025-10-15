@@ -14,7 +14,6 @@ import { RolesEffects } from 'src/app/modules/TaxCalculator/store/roles/roles.ef
 import { RolesState, rolesReducer } from 'src/app/modules/TaxCalculator/store/roles/roles.reducer';
 import { learnReducer, LearnState } from 'src/app/modules/learn/store/learn.reducer';
 import { LearnEffects } from 'src/app/modules/learn/store/learn.effect';
-import { loaderReducer, LoaderState } from 'src/app/core/loader/store/loader.reducer';
 import { taxCategoryReducer, TaxcategoryState } from 'src/app/modules/TaxCalculator/store/tax-categories/tax-category.reducer';
 import { TaxCategoryEffects } from 'src/app/modules/TaxCalculator/store/tax-categories/tax-category.effects';
 
@@ -24,7 +23,6 @@ export interface AppState {
   roles: RolesState;
  tax: TaxState;
  learn: LearnState;
-loader: LoaderState;
 taxCategory: TaxcategoryState
 }
 //  Define the ActionReducerMap
@@ -33,7 +31,6 @@ export const reducers: ActionReducerMap<AppState> = {
   roles: rolesReducer,
   tax: taxReducer,
   learn : learnReducer,
-  loader: loaderReducer,
   taxCategory: taxCategoryReducer
   
 };

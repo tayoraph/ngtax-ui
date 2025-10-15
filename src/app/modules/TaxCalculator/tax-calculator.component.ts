@@ -40,36 +40,9 @@ export class TaxCalculatorComponent implements OnInit{
   taxFormByEntity: FormGroup;
   titleForm: FormGroup;
   categoryForm: FormGroup;
-
-  taxResult = signal<number | null>(null);
-
   calculationMode: 'byTitle' | 'byCategory' | 'byEntity' = 'byTitle';
-
-  taxData: TaxData = {
-    Individuals: {
-      WhiteCollar: { SalaryRange: '₦800,000 - ₦6,000,000', TaxCategories: ['PIT', 'VAT'], Roles: ['Administrative Assistant', 'Office Manager'] },
-      CorporateExecutives: { SalaryRange: '₦6,000,000 - ₦50,000,000+', TaxCategories: ['PIT', 'VAT', 'CGT'], Roles: ['CEO', 'CFO'] },
-      FreelancersSelfEmployed: { SalaryRange: '₦300,000 - ₦2,500,000', TaxCategories: ['PIT', 'VAT', 'Digital Tax'], Roles: ['Tailor', 'Welder'] },
-      BlueCollar: { SalaryRange: '₦150,000 - ₦800,000', TaxCategories: ['PIT', 'VAT'], Roles: ['Mechanic', 'Bus Driver'] },
-      DigitalEconomyWorkers: { SalaryRange: '₦500,000 - ₦10,000,000+', TaxCategories: ['PIT', 'CGT', 'VAT'], Roles: ['Crypto Trader', 'Influencer'] },
-    },
-    Businesses: {
-      EntrepreneursSMEs: { TurnoverRange: '₦5,000,000 - ₦100,000,000', TaxCategories: ['CIT', 'VAT', 'Development Levy'], Roles: ['Boutique Owner', 'Tech Startup Owner'] },
-      LargeCompanies: { TurnoverRange: '₦100,000,000+', TaxCategories: ['CIT', 'VAT', 'ETR', 'CGT'], Roles: ['Oil & Gas Firm', 'Telecom Company'] },
-    },
-  };
-
- allTaxCategories = [...new Set(
-    Object.values(this.taxData.Individuals).flatMap(c => c.TaxCategories)
-    .concat(Object.values(this.taxData.Businesses).flatMap(c => c.TaxCategories))
-  )];
-
   Roles: Role[] = [];
-
   errorMessage = signal<string | null>(null);
-
-
-
   /////
   allData$ = this.store.select(selectAllTaxData);
   categoryData$ = this.store.select(selectCategoryData);
@@ -92,7 +65,6 @@ export class TaxCalculatorComponent implements OnInit{
 
   formattedIncome: string = '';
 
-
   /// taxcategory start here 
   categories: any
   // categories$ = this.store.select(TaxCategorySelectors.selectAllCategories);
@@ -107,10 +79,8 @@ export class TaxCalculatorComponent implements OnInit{
     // By category form
     this.categoryForm = this.fb.group({ category: [''], income: [0], role: [''] });
 
-     //this.Roles = this.extractAllRoles(this.taxData);
-     this.fetchRoles();
-
-       this.store.dispatch(TaxCategoriesActions.loadTaxCategories());
+    this.fetchRoles();
+    this.store.dispatch(TaxCategoriesActions.loadTaxCategories());
   }
 
   /////

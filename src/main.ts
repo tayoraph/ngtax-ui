@@ -11,7 +11,8 @@ import { FormValidation } from './Utils/formsValidations/formValidation';
 import { appStoreProviders, reducers } from './Utils/store';
 import { AppRoutingModule } from './app/app.routes';
 import { toastrProvider } from './Utils/config/toastr.config';
-import { LoaderInterceptor } from './app/core/interceptor/loader.interceptor';
+import { LoaderService } from './Utils/Loader/loader.service';
+import { LoadingInterceptor } from './Utils/Loader/loading.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -29,12 +30,13 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: LoaderInterceptor,
+      useClass: LoadingInterceptor,
       multi: true
     },
     ...appStoreProviders,
     toastrProvider,
     FormValidation,
+    LoaderService
   ],
   
 }).catch((err) => console.error(err));
