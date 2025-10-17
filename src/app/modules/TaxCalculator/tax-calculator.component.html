@@ -60,7 +60,7 @@
           </div>
 
           <!-- Submit button -->
-          <button type="submit"
+          <button type="submit" [disabled]="titleForm.invalid"
               class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-gray-300 transition duration-300">
               Calculate Tax
           </button>
@@ -97,7 +97,7 @@
             <input type="number" formControlName="income" placeholder="Enter income or turnover"
               class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
-          <button type="submit"
+          <button type="submit" [disabled]="categoryForm.invalid"
             class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition duration-300">
             Calculate Tax
           </button>
@@ -135,12 +135,12 @@
           </div>
 
           <div>
-            <label class="block text-gray-700 font-medium mb-2">Income / Turnover (₦)</label>
+            <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>
             <input type="number" formControlName="income" placeholder="Enter your income"
               class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
 
-          <button type="submit"
+          <button type="submit" [disabled]="taxFormByEntity.invalid"
             class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-primary transition duration-300">
             Calculate Tax
           </button>

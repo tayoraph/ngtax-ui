@@ -1,100 +1,52 @@
-// import { Injectable } from '@angular/core';
-// import { HttpInterceptor, HttpEvent, HttpResponse, HttpRequest, HttpHandler } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-// import { map, filter, retry } from 'rxjs/operators';
-// import { environment } from 'src/environments/environment';
-// import { EncryptionService } from '../Encryption/encryption';
-// import { Store } from '@ngxs/store';
-// import { loggedInUserData } from 'src/app/pages/login/store/login.model';
-// import { LoginState } from 'src/app/pages/login/store/login.state.';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable, catchError, map, of, throwError } from "rxjs";
+import { environment } from "src/environments/environment";
+import { EncryptionService } from "../Encryption/encryption";
+import { ToastrService } from "ngx-toastr";
 
-// @Injectable()
-// export class HeaderInterceptor implements HttpInterceptor {
-//   public loggedInUser: loggedInUserData | undefined; // getting store data as an observable
-//   constructor(public store :Store, private enc:EncryptionService) {
-//     this.getLoggedInUserData()
-//   }
-//   getLoggedInUserData(){
-//     let user = this;
-//     this.store.select(LoginState.getLoggedInUserSelector)
-//     .subscribe({
-//       next(value) {
-//       user.loggedInUser = value;
-//       // console.log(user.loggedInUser)
-//       }
-//     })
-//     }
+@Injectable()
+export class EncryptionInterceptor implements HttpInterceptor {
+  /**
+   *
+   */
+  constructor(private enc:EncryptionService, public toaster: ToastrService) {
+  }
 
-//   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//     return next.handle(httpRequest.clone({ setHeaders: { 
-//       token:  this.loggedInUser.currentLoggedInUserDetails !== undefined ? this.loggedInUser?.currentLoggedInUserDetails?.token
-//     : "",
-//      device:  this.enc.envEnc(JSON.stringify(this.loggedInUser.deviceInfromation)),
-//     } }));
-//   }
-// }
+   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Encrypt request body if it exists
+    let encryptedRequest = request;
+    if (request.body) {
+      const encryptedBody = this.enc.envEnc(JSON.stringify(request.body));
+      encryptedRequest = request.clone({
+        body: { param: encryptedBody },
+      });
+    }
 
+    return next.handle(encryptedRequest).pipe(
+      map(event => {
+        if (event instanceof HttpResponse && event.body?.param) {
+          try {
+            const decryptedBody =  JSON.parse(this.enc.envDecrpt(event.body.param));
+            return event.clone({ body: decryptedBody });
+          } catch (error) {
+            return event;
+          }
+        }
+        return event;
+      }),
+    catchError((err: any) => {
+       let decryptedBody 
+         if (err instanceof HttpErrorResponse) {
+         try {
+             decryptedBody =  JSON.parse(this.enc.envDecrpt(err.error));
+            this.toaster.error(decryptedBody.message)
+          } catch (error) {
+          }
+        }
+            return of(decryptedBody);
 
-
-// @Injectable()
-// export class EncryptionInterceptor implements HttpInterceptor {
-//   /**
-//    *
-//    */
-//   constructor(private enc:EncryptionService) {
-//   }
-//   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//     // console.log(environment.excemptedUrl)
-//    let excemptedUrl =environment.excemptedUrl
-//     if (this.isValidRequestForInterceptor(httpRequest.url, excemptedUrl)) { //exempting some endpoint from encryption
-//     httpRequest = httpRequest.clone({
-//       //encrypting request going to server
-//       body: { param: this.enc.envEnc(JSON.stringify(httpRequest.body)) },
-//     });
-
-//     return next.handle(httpRequest).pipe(
-//       map((event: HttpEvent<any>) => {
-//         if (event instanceof HttpResponse) {
-//           // decrypting response from server
-//           let decryptedResponse = JSON.parse(
-//             this.enc.envDecrpt(event.body.param)
-//           );
-//           event = event.clone({ body: decryptedResponse });
-//         }
-//         return event;
-//       })
-//     );
-//   } else {
-//     // return next.handle(httpRequest);
-//     return next.handle(httpRequest).pipe(
-//       map((event: HttpEvent<any>) => {
-//         if (event instanceof HttpResponse) {
-//           // decrypting response from server
-//           let decryptedResponse = JSON.parse(
-//             this.enc.envDecrpt(event.body.param)
-//           );
-//           event = event.clone({ body: decryptedResponse });
-//         }
-//         return event;
-//       })
-//     );
-//   }
-//   }
-
-//   private isValidRequestForInterceptor(requestUrl: string, excemptedUrl:any): boolean {
-//     let positionIndicator: string = 'uploadfile/';
-//     let position = requestUrl.indexOf(positionIndicator);
-//     if (position > 0) {
-//       let destination: string = requestUrl.substr(position + positionIndicator.length);
-//       // console.log(excemptedUrl)
-//       for (let address of excemptedUrl) {
-//         if (new RegExp(address).test(destination)) {
-//           return false;
-//         }
-//       }
-//     }
-//     return true;
-//   }
-
-// }
-
+    })
+    );
+  }
+}

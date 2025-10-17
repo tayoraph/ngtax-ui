@@ -7,28 +7,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { TaxReformService } from './tax.service';
 import { Store } from '@ngrx/store';
 import * as TaxReformActions from './store/actions';
-import { 
-  selectAllTaxData,
-  selectCategoryData,
-  selectRoleData,
-  selectTaxCategoryData,
-  selectLoading
-} from './store/selectors';
+import {   selectAllTaxData,  selectCategoryData,  selectRoleData,  selectTaxCategoryData,  selectLoading} from './store/selectors';
 import * as RolesActions from './store/roles/roles.actions';
 import * as fromRoles from './store/roles/roles.selector';
 import { filter, Observable, take } from 'rxjs';
-import { RoleTax } from './models/role-tax.model';
 
 
 import * as TaxSelectors from './store/role-tax/role.tax-selector';
 import * as TaxActions from './store/role-tax/role.tax.action';
 import { SuccessModalComponent } from 'src/Utils/modals/successModal/success-modal.component';
 
-
-import * as TaxCategorySelectors from './store/tax-categories/tax-category.selector';
 import * as TaxCategoriesActions from './store/tax-categories/tax-category.actions';
 import {  calculateTaxBycategoryNameRoleAndIncomeSelector, calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector, selectTaxCategories } from './store/tax-categories/tax-category.selector';
 import { taxCalculationBytaxcategoryRoleandIncome } from './models/tax-category-model';
+import { FormValidation } from 'src/Utils/formsValidations/formValidation';
 
 @Component({
   selector: 'app-tax-calculator',
@@ -71,13 +63,14 @@ export class TaxCalculatorComponent implements OnInit{
 
  private taxService = inject(TaxReformService);
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor(private fb: FormBuilder, private store: Store, public formValidation: FormValidation) {
     // Entity-based form
-    this.taxFormByEntity = this.fb.group({ userType: ['Individuals'], category: [''], role: [''], income: [0] });
+    this.taxFormByEntity = this.formValidation.taxFormByEntity();
     // By role form
-    this.titleForm = this.fb.group({ role: [''], income: [null] });
-    // By category form
-    this.categoryForm = this.fb.group({ category: [''], income: [0], role: [''] });
+    this.titleForm = this.formValidation.titleForm();
+
+     // By category form
+    this.categoryForm = this.formValidation.categoryForm();
 
     this.fetchRoles();
     this.store.dispatch(TaxCategoriesActions.loadTaxCategories());
@@ -85,22 +78,11 @@ export class TaxCalculatorComponent implements OnInit{
 
   /////
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.store.dispatch(TaxReformActions.loadAllTaxData());
      this.fetchTaxCatgeories()
   }
 
-  onSelectCategory(category: string) {
-    this.store.dispatch(TaxReformActions.loadByCategory({ category }));
-  }
-
-  onSelectRole(role: string) {
-    this.store.dispatch(TaxReformActions.loadByRole({ role }));
-  }
-
-  onSelectTaxCategory(taxCategory: string) {
-    this.store.dispatch(TaxReformActions.loadByTaxCategory({ taxCategory }));
-  }
 
 
 //#region  currency formmeter 
@@ -137,15 +119,6 @@ onIncomeInput(event: Event) {
     })}`;
   }
 //#endregion
-
-
-
-
-
-
-
-
-
 
 
 //#region Fetch roles 
@@ -287,7 +260,6 @@ showTaxResult(result: any, income:number) {
       userType: this.taxFormByEntity.get('userType')?.value,
 
     }
-debugger
     this.store.dispatch(TaxCategoriesActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeAction({calculateReq:value}))
     this.store.select(calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector)
           .pipe(
@@ -296,7 +268,10 @@ debugger
           )
           .subscribe((data) => {
             this.showTaxByCategoryResult(data.data,value.incomeOrTurnover);
-     });
+     },error=>{
+      console.log(error)
+     })
+    
   }
 
 //#endregion
