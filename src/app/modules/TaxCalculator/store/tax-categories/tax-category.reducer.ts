@@ -9,6 +9,7 @@ export interface TaxcategoryState {
   loading: boolean;
   error: any;
   calcuateTaxByRoleIncomeUsertypeAndcategory: any
+  loadTaxByUserType:any
 }
 
 export const initialTaxcategoryState: TaxcategoryState = {
@@ -16,7 +17,8 @@ export const initialTaxcategoryState: TaxcategoryState = {
   loading: false,
   error: null,
   calcuateTaxByRoleIncomeAndcategory: null,
-  calcuateTaxByRoleIncomeUsertypeAndcategory: undefined
+  calcuateTaxByRoleIncomeUsertypeAndcategory: undefined,
+  loadTaxByUserType:[]
 };
 
 // Feature key (used when registering reducer)
@@ -39,17 +41,17 @@ export const taxCategoryReducer = createReducer(
     loading: false,
     error,
   })),
-  on(TaxcategoriesActions.loadTaxByType, (state) => ({ ...state,})),
-  on(TaxcategoriesActions.loadTaxByTypeSuccess, (state, { categories }) => ({
-    ...state,
+  // on(TaxcategoriesActions.loadTaxByUserType, (state) => ({ ...state,})),
+  // on(TaxcategoriesActions.loadTaxByUserTypeSuccess, (state, { categories }) => ({
+  //   ...state,
     
-    categories,
-  })),
-  on(TaxcategoriesActions.loadTaxByTypeFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  })),
+  //   categories,
+  // })),
+  // on(TaxcategoriesActions.loadTaxByUserTypeFailure, (state, { error }) => ({
+  //   ...state,
+  //   loading: false,
+  //   error,
+  // })),
 
   ///////calculate tax by category , role and incomem
   on(TaxcategoriesActions.calculateTaxBycategoryNameRoleAndIncomeAction, (state) => ({ ...state})),
@@ -73,6 +75,17 @@ export const taxCategoryReducer = createReducer(
   on(TaxcategoriesActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeFailureAction, (state, { error }) => ({
     ...state,
     loading: false,
+    error,
+  })),
+
+    ///////get category  tax by  UserType
+  on(TaxcategoriesActions.loadTaxByUserType, (state) => ({ ...state})),
+  on(TaxcategoriesActions.loadTaxByUserTypeSuccess, (state, { loadTaxByUserType }) => ({
+    ...state,
+    loadTaxByUserType,
+  })),
+  on(TaxcategoriesActions.loadTaxByUserTypeFailure, (state, { error }) => ({
+    ...state,
     error,
   })),
 );

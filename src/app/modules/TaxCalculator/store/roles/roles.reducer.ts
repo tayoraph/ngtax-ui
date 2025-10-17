@@ -4,13 +4,15 @@ import { Role } from '../../tax.model';
 
 export interface RolesState {
   roles: Role[];
-  loading: boolean;
+  rolesbyCategory: Role[];
+  rolesbyCategoryAndUserType: Role[];
   error: any;
 }
 
 export const initialState: RolesState = {
   roles: [],
-  loading: false,
+  rolesbyCategory: [],
+  rolesbyCategoryAndUserType:[],
   error: null
 };
 
@@ -20,11 +22,34 @@ export const rolesReducer = createReducer(
   on(RolesActions.loadRolesSuccess, (state, { roles }) => ({
     ...state,
     roles,
-    loading: false
   })),
   on(RolesActions.loadRolesFailure, (state, { error }) => ({
     ...state,
     error,
-    loading: false
+  })),
+
+  /// load to roles by category,
+  on(RolesActions.loadRoleByCategory, state => ({ ...state, loading: true })),
+  on(RolesActions.loadRoleByCategorySuccess, (state, { rolesbyCategory }) => ({
+    ...state,
+    rolesbyCategory,
+  })),
+  on(RolesActions.loadRoleByCategoryFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+
+
+  /// load to roles by category,
+  on(RolesActions.loadRoleByCategoryAndUserType, state => ({ ...state, loading: true })),
+  on(RolesActions.loadRoleByCategoryAndUserTypeSuccess, (state, { rolesbyCategoryAndUserType }) => {
+      // console.log('✅ Reducer received data:', rolesbyCategoryandUserType); 
+  return{  ...state,
+    rolesbyCategoryAndUserType,
+  }
+  }),
+  on(RolesActions.loadRoleByCategoryAndUserTypeFailure, (state, { error }) => ({
+    ...state,
+    error,
   }))
 );

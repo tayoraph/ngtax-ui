@@ -14,17 +14,17 @@ export const loadTaxCategoriesFailure = createAction(
 );
 
 // Load by category type
-export const loadTaxByType = createAction(
+export const loadTaxByUserType = createAction(
   '[Tax] Load Tax By Type',
-  props<{ categoryType: 'Individuals' | 'Businesses' }>()
+  props<{ userType: string }>()
 );
 
 
-export const loadTaxByTypeSuccess = createAction(
+export const loadTaxByUserTypeSuccess = createAction(
   '[Tax] Load Tax By Type Success',
-  props<{ categories: SubCategoryData[] }>()
+  props<{ loadTaxByUserType: SubCategoryData[] }>()
 );
-export const loadTaxByTypeFailure = createAction(
+export const loadTaxByUserTypeFailure = createAction(
   '[Tax] Load Tax By Type Failure',
   props<{ error: any }>()
 );

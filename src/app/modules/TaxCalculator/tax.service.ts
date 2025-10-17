@@ -78,12 +78,16 @@ export class TaxReformService extends BaseHttpService {
     return this.get<SubCategoryData[]>(con);
   }
 
-  getByCategory(categoryType: 'Individuals' | 'Businesses'): Observable<SubCategoryData[]> {
-    let con = environment.BaseUrl + environment.getByCategoryType +  categoryType;
+  getRolesByCategoryAndUserType(categoryType: string, entityType:string ): Observable<ApiResponse<Role[]> >{ 
+    let con = environment.BaseUrl + environment.getRolesByCategoryAndUserType +`${categoryType}/${entityType}`;
 
-    return this.get<SubCategoryData[]>(con);
+    return this.get<ApiResponse<Role[]>>(con);
   }
 
+   getRolesByCategory(categoryType: string ): Observable<ApiResponse<Role[]> >{ 
+    let con = environment.BaseUrl + environment.getRolesByCategory +`${categoryType}`;
+    return this.get<ApiResponse<Role[]>>(con);
+  }
   calculateTaxbyCategoryRoleIncome(req:taxCalculationBytaxcategoryRoleandIncome): Observable<ApiResponse> {
     let con = environment.BaseUrl + environment.CalculateTaxbyCategoryRoleIncome;
     return this.post<ApiResponse>(con,req);
@@ -95,4 +99,9 @@ export class TaxReformService extends BaseHttpService {
   }
 
   //
+    getByCategory(userType: string): Observable<ApiResponse<SubCategoryData[]>> { 
+    let con = environment.BaseUrl + environment.getCategoryByUserType +  userType;
+    return this.get<ApiResponse<SubCategoryData[]>>(con);
+  }
+
 }

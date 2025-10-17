@@ -26,15 +26,15 @@ export class TaxCategoryEffects {
   );
 
   // Load categories by type (Individuals or Businesses)
-  loadTaxByType$ = createEffect(() =>
+  loadTaxByUserType$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TaxActions.loadTaxByType),
-      mergeMap(({ categoryType }) =>
-        this.taxService.getByCategory(categoryType).pipe(
-          map((categories: SubCategoryData[]) => 
-            TaxActions.loadTaxByTypeSuccess({ categories })
+      ofType(TaxActions.loadTaxByUserType),
+      mergeMap(({ userType }) =>
+        this.taxService.getByCategory(userType).pipe(
+          map((response: ApiResponse<SubCategoryData[]>) => 
+            TaxActions.loadTaxByUserTypeSuccess({ loadTaxByUserType : response.data })
           ),
-          catchError((error) => of(TaxActions.loadTaxByTypeFailure({ error })))
+          catchError((error) => of(TaxActions.loadTaxByUserTypeFailure({ error })))
         )
       )
     )

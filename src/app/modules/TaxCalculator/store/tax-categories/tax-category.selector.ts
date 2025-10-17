@@ -14,7 +14,7 @@ export const selectTaxCategories = createSelector(
   }
 );
 
-// Select all tax categories
+// calculate Tax By category Name Role And Income Selector
 export const  calculateTaxBycategoryNameRoleAndIncomeSelector= createSelector(
   selectTaxCategoryState,
   (state: TaxcategoryState) => {
@@ -22,7 +22,7 @@ export const  calculateTaxBycategoryNameRoleAndIncomeSelector= createSelector(
   }
 );
 
-// Select all tax categories
+// calculate Tax By category Name Role Usertype And Income Selector
 export const  calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector= createSelector(
   selectTaxCategoryState,
   (state: TaxcategoryState) => {
@@ -31,22 +31,12 @@ export const  calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector= createSel
 );
 
 
-// Select loading state
-export const selectTaxLoading = createSelector(
-  selectTaxCategoryState,
-  (state: TaxcategoryState) => state.loading
-);
-
-// Select error
-export const selectTaxError = createSelector(
-  selectTaxCategoryState,
-  (state: TaxcategoryState) => state.error
-);
 
 
 
 // Select categories by subcategory name
-// export const selectCategoryByName = (subCategoryName: string) =>
-//   createSelector(selectAllCategories, (categories: SubCategoryData[]) =>
-//     categories.find(cat => cat.name === subCategoryName)
-//   );
+export const loadTaxByUserTypeSelector = 
+  createSelector(selectTaxCategoryState, (state: TaxcategoryState) => {
+    return state.loadTaxByUserType;
+  }
+  );

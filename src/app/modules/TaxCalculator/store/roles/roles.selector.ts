@@ -7,8 +7,20 @@ export const selectAllRoles = createSelector(
   selectRolesState,
   state => state.roles
 );
-
-export const selectRolesLoading = createSelector(
+export const rolesbyCategoryAndUserTypeSelector = createSelector(
   selectRolesState,
-  state => state.loading
+   (state) => {
+    // console.log('📦 Selector data:', state); // 👈 log here
+    return state.rolesbyCategoryAndUserType;
+  }
+ // state => state.rolesbyCategoryAndUserType
 );
+
+export const rolesByCategory = createSelector(
+  selectRolesState,
+  state => state.rolesbyCategory
+);
+
+
+
+

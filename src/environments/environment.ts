@@ -20,10 +20,11 @@ export const environment = {
 
   // tax categories 
   getAllTaxcategories : 'tax-categories',
-  getByCategoryType : 'tax-categories/',
   CalculateTaxbyCategoryRoleIncome :"taxreform/TaxCalculationByTaxNameRoleAndIncomeDto",
-  calculateTaxBycategoryNameRoleuserType :'taxreform/TaxCalculationByTagnameRoleaEntityndIncomeInput'
-  
+  calculateTaxBycategoryNameRoleuserType :'taxreform/TaxCalculationByTagnameRoleaEntityndIncomeInput',
+  getRolesByCategoryAndUserType: 'tax-categories/getRolesByTax/',
+  getRolesByCategory:"taxreform/tax/",
+  getCategoryByUserType : 'tax-categories/getCategoryByUserType/',
 };
 
 /*

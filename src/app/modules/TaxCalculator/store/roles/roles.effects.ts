@@ -25,6 +25,39 @@ export class RolesEffects {
     )
   );
 
+
+  // roles by category and user type
+  rolesbyCategoryandUserTypeEffects$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.loadRoleByCategoryAndUserType),
+      mergeMap(({category, userType}) =>
+        this.taxReformService.getRolesByCategoryAndUserType(category, userType).pipe(
+          //  tap(response => console.log('✅ API response in Effect:', response)), 
+          map((response:ApiResponse<Role[]>) => RolesActions.loadRoleByCategoryAndUserTypeSuccess({ 
+            rolesbyCategoryAndUserType: response.data
+           })),
+          catchError(error => of(RolesActions.loadRoleByCategoryAndUserTypeFailure({ error })))
+        )
+      )
+    )
+  );
+
+
+  // role by category
+   rolesbyCategory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.loadRoleByCategory),
+      mergeMap(({category}) =>
+        this.taxReformService.getRolesByCategory(category).pipe(
+          map((response:ApiResponse<Role[]>) => RolesActions.loadRoleByCategorySuccess({ 
+            rolesbyCategory: response.data
+           })),
+          catchError(error => of(RolesActions.loadRoleByCategoryFailure({ error })))
+        )
+      )
+    )
+  );
+
   // Show error toast on failure
   showError$ = createEffect(() =>
     this.actions$.pipe(
