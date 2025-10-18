@@ -29,13 +29,23 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class LandingComponent implements OnInit, AfterViewInit {
   contactForm: FormGroup;
-
+ menuOpen = false;
   constructor(private fb: FormBuilder, private renderer: Renderer2) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
     });
+  }
+
+ 
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
   }
 
   ngOnInit(): void {}

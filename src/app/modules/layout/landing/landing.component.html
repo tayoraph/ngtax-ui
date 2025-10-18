@@ -6,17 +6,37 @@
       <span>TAXNG</span>
     </div>
 
+    <!-- Hamburger (visible only on mobile) -->
+    <div class="menu-toggle" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
     <!-- Navigation Links -->
-    <nav class="nav-links">
-      <a routerLink="/about">Services</a>
-      <a routerLink="dashboard/learn">Learn</a>
-      <a routerLink="/dashboard/FAQs">FAQs</a>
-      <a routerLink="dashboard/coming-soon">Developer</a>
-      <!-- <a routerLink="/contact">Contact</a> -->
+    <nav class="nav-links" [class.active]="menuOpen">
+      <a href="#Services" (click)="closeMenu()">Services</a>
+      <a routerLink="dashboard/learn" (click)="closeMenu()">Learn</a>
+      <a routerLink="dashboard/coming-soon" (click)="closeMenu()">Developer</a>
+  <!-- CTA Button (visible only on mobile) -->
+      <button
+        mat-raised-button
+        color="primary"
+        routerLink="dashboard/calculateTax"
+        class="nav-cta mobile-cta"
+        (click)="closeMenu()"
+      >
+        CALCULATE YOUR TAX
+      </button>
     </nav>
 
-    <!-- Button -->
-    <button routerLink="dashboard/calculateTax" mat-raised-button color="primary" class="nav-cta">
+    <!-- CTA Button (visible only on desktop) -->
+    <button
+      mat-raised-button
+      color="primary"
+      routerLink="dashboard/calculateTax"
+      class="nav-cta desktop-cta"
+    >
       CALCULATE YOUR TAX
     </button>
   </div>
@@ -51,7 +71,7 @@
 
 
 <!-- Features Section -->
-<section class="container mx-auto px-4 py-12 text-center">
+<section id="Services" class="container mx-auto px-4 py-12 text-center">
   <h1 class=" text-3xl font-bold mb-10 fade-in highlight">Services</h1>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

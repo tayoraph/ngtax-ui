@@ -5,6 +5,8 @@
   font-family: 'Inter', sans-serif;
 }
 
+
+
 // body, html {
 //   margin: 0;
 //   padding: 0;
@@ -18,62 +20,132 @@ h1{
 /* ===== Top Nav ===== */
 .top-nav {
   background: #fff;
-  border-bottom: 1px solid #eee;
-  padding: 15px 5%;
+  border-bottom: 1px solid #e5e5e5;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 
   .nav-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0.8rem 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
   }
 
+  /* --- Logo --- */
   .logo {
     display: flex;
     align-items: center;
-    font-weight: 600;
-    font-size: 16px;
-    color: #111;
+    gap: 8px;
 
     img {
-      height: 30px;
-      margin-right: 8px;
+      width: 36px;
+      height: 36px;
+    }
+
+    span {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--mat-color-primary)
     }
   }
 
+  /* --- Nav links (desktop) --- */
   .nav-links {
     display: flex;
-    gap: 30px;
+    align-items: center;
+    gap: 1.5rem;
 
     a {
-      text-decoration: none;
-      font-size: 15px;
       color: #333;
+      text-decoration: none;
       font-weight: 500;
-      transition: color 0.3s ease;
+      transition: color 0.3s;
 
       &:hover {
-        color: #00894d; // highlight green
+        color: var(--mat-color-primary);
       }
+    }
+
+    .mobile-cta {
+      display: none;
     }
   }
 
-  .nav-cta {
-    background: #111;
-    color: #fff;
-    font-weight: 500;
-    border-radius: 20px;
-    padding: 6px 18px;
+  /* --- CTA (desktop only) --- */
+  .desktop-cta {
+    font-weight: 600;
+    white-space: nowrap;
+  }
 
-    &:hover {
-      background: #333;
+  /* --- Hamburger menu --- */
+.menu-toggle {
+  display: none; /* hidden by default */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 2000;
+
+  span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+}
+
+  /* --- Mobile styles --- */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: flex;
+    }
+
+   .nav-links {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+  transform: translateY(-200%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease-in-out;
+
+  &.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .mobile-cta {
+    display: block;
+  }
+}
+
+/* Mobile media query */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex; /* now it shows */
+  }
+}
+
+    .desktop-cta {
+      display: none;
     }
   }
 }
+
 /* Hero */
 .hero-section {
   padding: 4rem 2rem;
@@ -108,7 +180,7 @@ h1{
     margin: 1rem 0;
 
     .highlight {
-      color: #00875a; // green highlight like screenshot
+      color: var(--mat-color-primary); // green highlight like screenshot
     }
 
     @media (max-width: 600px) {
@@ -118,7 +190,7 @@ h1{
 
   p {
     font-size: 1.1rem;
-    color: #444;
+    color: #383838;
     max-width: 500px;
     margin-bottom: 2rem;
   }
