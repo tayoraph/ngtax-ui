@@ -63,10 +63,13 @@ export class TaxCalculatorComponent implements OnInit{
   dropdownOpenForRolesCategory = false;
   dropdownOpenForCategory = false;
   dropdownOpenForRole = false;
+  dropdownOpenForRolesTitle = false;
 
   filteredCategoriesByCategory :any
   filteredCategories :any
   filteredRoles :any
+  rolesByTiltleFiltered :any
+  rolesByCategoryAnduserTypeFiltered :any
 
 
  private taxService = inject(TaxReformService);
@@ -154,7 +157,7 @@ onIncomeInput(event: Event) {
     .subscribe({next(value) {
        // user.Roles =value
         user.Roles = [...value].sort();
-
+        user.rolesByTiltleFiltered = [...value];
     },
     error(err) {
         console.log(err)
@@ -172,7 +175,7 @@ onIncomeInput(event: Event) {
      this.store.select(fromRoles.rolesbyCategoryAndUserTypeSelector)
     .subscribe({next(value) {
         user.RolesByCategoryAndUserType = [...value];
-        user.filteredRoles = [...value];
+        user.rolesByCategoryAnduserTypeFiltered = [...value];
 
     },
     error(err) {
@@ -359,6 +362,25 @@ showTaxResult(result: any, income:number) {
 
 
 
+//#region search option for role on calculate by roles and title
+ toggleRoleTitleDropdown(): void {
+    this.dropdownOpenForRolesTitle = !this.dropdownOpenForRolesTitle;
+  }
+
+  selectRoleTitle(value: string): void {
+    this.titleForm.patchValue({ role: value });
+    this.dropdownOpenForRolesTitle = false;
+  }
+
+  filterRolesTitle(): void {
+    const search = this.titleForm.get('role')?.value.toLowerCase();
+    this.rolesByTiltleFiltered = this.Roles.filter((c:any) =>
+      c.title.toLowerCase().includes(search)
+    );
+  }
+//#endregion
+
+
 //#region search option for role on calculate by category nad roles
  toggleRoleByCategoryDropdown(): void {
     this.dropdownOpenForRolesCategory = !this.dropdownOpenForRolesCategory;
@@ -411,7 +433,7 @@ showTaxResult(result: any, income:number) {
 
   filterRoles(): void {
     const search = this.taxFormByEntity.get('role')?.value.toLowerCase();
-    this.filteredRoles = this.RolesByCategoryAndUserType.filter((c:any) =>
+    this.rolesByCategoryAnduserTypeFiltered = this.RolesByCategoryAndUserType.filter((c:any) =>
       c.title.toLowerCase().includes(search)
     );
   }

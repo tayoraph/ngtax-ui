@@ -42,11 +42,63 @@
           <!-- Role select -->
           <div>
               <label class="block text-gray-700 font-medium mb-2">Role Title</label>
-              <select formControlName="role"
+              <!-- <select formControlName="role"
               class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
               <option value="" disabled selected>Select a role</option>
               <option *ngFor="let role of Roles" [value]="role.title">{{ role.title }}</option>
-              </select>
+              </select> -->
+
+                <div class="relative">
+                <!-- Select display -->
+                <div
+                  class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  (click)="toggleRoleTitleDropdown()"
+                >
+                  <span>
+                    {{
+                      titleForm.get('role')?.value
+                        ? titleForm.get('role')?.value
+                        : 'Select your role'
+                    }} 
+                  </span>
+                  <svg
+                    class="w-4 h-4 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <!-- Dropdown list -->
+                <div
+                  *ngIf="dropdownOpenForRolesTitle"
+                  class="text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                >
+                  <!-- Search input -->
+                  <div class="p-2">
+                    <input
+                      type="text"
+                      formControlName="role"
+                      (input)="filterRolesTitle()"
+                      placeholder="Search..."
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <!-- Option list -->
+                  <div *ngFor="let c of rolesByTiltleFiltered">
+                    <div
+                      (click)="selectRoleTitle(c.title)"
+                      class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                    >
+                      {{ c.title }}
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
 
           <!-- Income input -->
@@ -96,7 +148,7 @@
               <div class="relative">
                 <!-- Select display -->
                 <div
-                  class="w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   (click)="toggleRoleByCategoryDropdown()"
                 >
                   <span>
@@ -120,7 +172,7 @@
                 <!-- Dropdown list -->
                 <div
                   *ngIf="dropdownOpenForRolesCategory"
-                  class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                  class="text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
                 >
                   <!-- Search input -->
                   <div class="p-2">
@@ -178,7 +230,7 @@
               <div class="relative">
                 <!-- Select display -->
                 <div
-                  class="w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:bg-gray-200 focus:outline-none"
+                  class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:bg-gray-200 focus:outline-none"
                   (click)="toggleCategoryDropdown()"
                 >
                   <span>
@@ -202,7 +254,7 @@
                 <!-- Dropdown list -->
                 <div
                   *ngIf="dropdownOpenForCategory"
-                  class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                  class="text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
                 >
                   <!-- Search input -->
                   <div class="p-2">
@@ -236,7 +288,7 @@
                <div class="relative">
                 <!-- Select display -->
                 <div
-                  class="w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   (click)="toggleRoleDropdown()"
                 >
                   <span>
@@ -260,7 +312,7 @@
                 <!-- Dropdown list -->
                 <div
                   *ngIf="dropdownOpenForRole"
-                  class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                  class=" text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
                 >
                   <!-- Search input -->
                   <div class="p-2">
@@ -274,7 +326,7 @@
                   </div>
 
                   <!-- Option list -->
-                  <div *ngFor="let c of filteredRoles">
+                  <div *ngFor="let c of rolesByCategoryAnduserTypeFiltered">
                     <div
                       (click)="selectRole(c.title)"
                       class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
