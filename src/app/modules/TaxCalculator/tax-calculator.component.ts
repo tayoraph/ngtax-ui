@@ -60,9 +60,11 @@ export class TaxCalculatorComponent implements OnInit{
   categories: any
   categoriesByUserType:any
 
+  dropdownOpenForRolesCategory = false;
   dropdownOpenForCategory = false;
   dropdownOpenForRole = false;
 
+  filteredCategoriesByCategory :any
   filteredCategories :any
   filteredRoles :any
 
@@ -356,6 +358,27 @@ showTaxResult(result: any, income:number) {
 //#endregion
 
 
+
+//#region search option for role on calculate by category nad roles
+ toggleRoleByCategoryDropdown(): void {
+    this.dropdownOpenForRolesCategory = !this.dropdownOpenForRolesCategory;
+  }
+
+  selectRoleByCategory(value: string): void {
+    this.categoryForm.patchValue({ role: value });
+    this.dropdownOpenForRolesCategory = false;
+  }
+
+  filterRolesInCategory(): void {
+    const search = this.categoryForm.get('role')?.value.toLowerCase();
+    this.filteredRoles = this.RolesByCategory.filter((c:any) =>
+      c.title.toLowerCase().includes(search)
+    );
+  }
+//#endregion
+
+
+
 //#region search option forcategory select field 
  toggleCategoryDropdown(): void {
     this.dropdownOpenForCategory = !this.dropdownOpenForCategory;
@@ -393,4 +416,6 @@ showTaxResult(result: any, income:number) {
     );
   }
 //#endregion
+
+
 } 

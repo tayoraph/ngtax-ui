@@ -13,7 +13,6 @@ export class SuccessModalComponent {
   @Input() message?: string;
   @Input() show: boolean = false;
  @Input() data: Record<string, any> | null | undefined = undefined;
-//   objectKeys = Object.keys;
    // Expose global helpers to the template
   Array = Array;
   /** Optional: icon type - success | error | info */
@@ -45,7 +44,7 @@ export class SuccessModalComponent {
       default:
         return {
           icon: '✅',
-          color: 'text-[#008751]',
+          color: 'text-primary',
         };
     }
   }
