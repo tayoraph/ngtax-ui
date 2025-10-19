@@ -26,7 +26,7 @@ export const loadRoleByCategoryFailure = createAction(
 
 
 // fetch role by category and user type
-export const loadRoleByCategoryAndUserType = createAction('[Roles] Load Roles by category and user type', props<{ category: string,  userType:string }>());
+export const loadRoleByCategoryAndUserType = createAction('[Roles] Load Roles by category and user type', props<{   userType:string, category: string, }>());
 export const loadRoleByCategoryAndUserTypeSuccess = createAction(
   '[Roles]Load Roles by category and user type Success',
   props<{ rolesbyCategoryAndUserType: Role[] }>()

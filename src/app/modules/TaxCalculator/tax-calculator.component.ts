@@ -1,6 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormGroup, FormsModule } from '@angular/forms';
 import { TaxData, EntityType, Role } from './tax.model';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,8 +25,9 @@ import { FormValidation } from 'src/Utils/formsValidations/formValidation';
 @Component({
   selector: 'app-tax-calculator',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgSelectModule,SuccessModalComponent, HttpClientModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule,SuccessModalComponent, HttpClientModule],
   templateUrl: './tax-calculator.component.html',
+  schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TaxCalculatorComponent implements OnInit{
   taxFormByEntity: FormGroup;
@@ -39,11 +40,6 @@ export class TaxCalculatorComponent implements OnInit{
 
   errorMessage = signal<string | null>(null);
   /////
-  // allData$ = this.store.select(selectAllTaxData);
-  // categoryData$ = this.store.select(selectCategoryData);
-  // roleData$ = this.store.select(selectRoleData);
-  // taxCategoryData$ = this.store.select(selectTaxCategoryData);
-  // loading$ = this.store.select(selectLoading);
   
   // roles
   roles$: Observable<Role[]> | undefined;
@@ -63,7 +59,13 @@ export class TaxCalculatorComponent implements OnInit{
   /// taxcategory start here 
   categories: any
   categoriesByUserType:any
-  // categories$ = this.store.select(TaxCategorySelectors.selectAllCategories);
+
+  dropdownOpenForCategory = false;
+  dropdownOpenForRole = false;
+
+  filteredCategories :any
+  filteredRoles :any
+
 
  private taxService = inject(TaxReformService);
 
@@ -100,14 +102,6 @@ export class TaxCalculatorComponent implements OnInit{
     .pipe(debounceTime(200))
     .subscribe(category => {
        this.fetchCategoryByUserType(category);
-    });
-
-    // when category and  usertype changes
-    this.taxFormByEntity.get('category')!
-    .valueChanges
-    .pipe(debounceTime(200))
-    .subscribe(category => {
-       this.fetchRolesByCategoryAndUserType(this.taxFormByEntity.get('userType')?.value, this.taxFormByEntity.get('category')?.value);
     });
   }
 
@@ -169,13 +163,14 @@ onIncomeInput(event: Event) {
   //#endregion
 
 
-//#region Fetch roles by category 
+//#region Fetch roles by category and usertype
  fetchRolesByCategoryAndUserType(category:string, userType:string) {  
     let user = this
-     this.store.dispatch(RolesActions.loadRoleByCategoryAndUserType({category:category, userType: userType}));
+     this.store.dispatch(RolesActions.loadRoleByCategoryAndUserType({ userType: userType, category:category,}));
      this.store.select(fromRoles.rolesbyCategoryAndUserTypeSelector)
     .subscribe({next(value) {
-        user.RolesByCategoryAndUserType = [...value].sort();
+        user.RolesByCategoryAndUserType = [...value];
+        user.filteredRoles = [...value];
 
     },
     error(err) {
@@ -183,16 +178,19 @@ onIncomeInput(event: Event) {
     },})
     
   }
+  //#endregion
 
 
-
+//#region Fetch role by category
   fetchRolesByCategory(category:string) {
      let user = this
      this.store.dispatch(RolesActions.loadRoleByCategory({category:category}));
      this.store.select(fromRoles.rolesByCategory)
     .subscribe({next(value) {
       //  console.log(value)
-        user.RolesByCategory = [...value].sort();
+        user.RolesByCategory = [...value];
+        user.filteredRoles = [...value];
+
 
     },
     error(err) {
@@ -200,14 +198,16 @@ onIncomeInput(event: Event) {
     },})
   }
 
+  //#endregion
 
-  //fetching categories by user type
+  //#region fetching categories by user type
     fetchCategoryByUserType(userType:string) {
      let user = this
      this.store.dispatch(TaxCategoriesActions.loadTaxByUserType({userType:userType}));
      this.store.select(loadTaxByUserTypeSelector)
     .subscribe({next(value) {
-        user.categoriesByUserType = value
+        user.categoriesByUserType = value;
+         user.filteredCategories = [...value];
 
     },
     error(err) {
@@ -355,4 +355,42 @@ showTaxResult(result: any, income:number) {
 
 //#endregion
 
+
+//#region search option forcategory select field 
+ toggleCategoryDropdown(): void {
+    this.dropdownOpenForCategory = !this.dropdownOpenForCategory;
+  }
+
+  selectCategory(value: string): void {
+    this.taxFormByEntity.patchValue({ category: value });
+    this.dropdownOpenForCategory = false;
+     this.fetchRolesByCategoryAndUserType(this.taxFormByEntity.get('userType')?.value, this.taxFormByEntity.get('category')?.value);
+  }
+
+  filterCategories(): void {
+    const search = this.taxFormByEntity.get('category')?.value.toLowerCase();
+    this.filteredCategories = this.categoriesByUserType.filter((c:any) =>
+      c.name.toLowerCase().includes(search)
+    );
+  }
+//#endregion
+
+
+//#region search option forcategory select field 
+ toggleRoleDropdown(): void {
+    this.dropdownOpenForRole = !this.dropdownOpenForRole;
+  }
+
+  selectRole(value: string): void {
+    this.taxFormByEntity.patchValue({ role: value });
+    this.dropdownOpenForRole = false;
+  }
+
+  filterRoles(): void {
+    const search = this.taxFormByEntity.get('role')?.value.toLowerCase();
+    this.filteredRoles = this.RolesByCategoryAndUserType.filter((c:any) =>
+      c.title.toLowerCase().includes(search)
+    );
+  }
+//#endregion
 } 

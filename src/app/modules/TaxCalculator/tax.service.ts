@@ -79,7 +79,7 @@ export class TaxReformService extends BaseHttpService {
   }
 
   getRolesByCategoryAndUserType(categoryType: string, entityType:string ): Observable<ApiResponse<Role[]> >{ 
-    let con = environment.BaseUrl + environment.getRolesByCategoryAndUserType +`${categoryType}/${entityType}`;
+    let con = environment.BaseUrl + environment.getRolesByCategoryAndUserType +`${entityType}/${categoryType}`;
 
     return this.get<ApiResponse<Role[]>>(con);
   }

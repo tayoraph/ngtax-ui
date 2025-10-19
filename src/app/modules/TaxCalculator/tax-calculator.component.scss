@@ -1,1 +1,11 @@
- 
+ ::ng-deep .custom-ng-select .ng-select-container {
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  border-radius: 0.75rem; /* rounded-xl */
+  padding: 0.75rem 1.25rem; /* py-3 px-5 */
+  height: auto;
+}
+
+::ng-deep .custom-ng-select.ng-select-focused .ng-select-container {
+  border-color: #3b82f6; /* Tailwind blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); /* focus ring */
+}

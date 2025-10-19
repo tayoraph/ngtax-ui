@@ -117,25 +117,124 @@
               <option value="Businesses">Business</option>
             </select>
           </div>
-<!-- categories -->
+        <!-- categories -->
           <div>
             <label class="block text-gray-700 font-medium mb-2">Tax Category</label>
-              <select formControlName="category"
-              class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                <option value="" disabled selected>Select a tax category</option>
-              <option *ngFor="let c of categoriesByUserType" [value]="c.name">{{ c.name }}</option>
-            </select>
+         
+            <!-- Dropdown container -->
+              <div class="relative">
+                <!-- Select display -->
+                <div
+                  class="w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:bg-gray-200 focus:outline-none"
+                  (click)="toggleCategoryDropdown()"
+                >
+                  <span>
+                    {{
+                      taxFormByEntity.get('category')?.value
+                        ? taxFormByEntity.get('category')?.value
+                        : 'Select a tax category'
+                    }} 
+                  </span>
+                  <svg
+                    class="w-4 h-4 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <!-- Dropdown list -->
+                <div
+                  *ngIf="dropdownOpenForCategory"
+                  class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                >
+                  <!-- Search input -->
+                  <div class="p-2">
+                    <input
+                      type="text"
+                      formControlName="category"
+                      (input)="filterCategories()"
+                      placeholder="Search..."
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <!-- Option list -->
+                  <div *ngFor="let c of filteredCategories">
+                    <div
+                      (click)="selectCategory(c.name)"
+                      class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                    >
+                      {{ c.name }}
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
 
           <!--  roles -->
           <div>
             <label class="block text-gray-700 font-medium mb-2">Role</label>
-             <select formControlName="role"
-            class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-            <option value="" disabled selected>Select a role</option>
-            <option *ngFor="let role of RolesByCategoryAndUserType" [value]="role.title">{{ role.title }} </option>
-            </select>
+       
+
+               <div class="relative">
+                <!-- Select display -->
+                <div
+                  class="w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  (click)="toggleRoleDropdown()"
+                >
+                  <span>
+                    {{
+                      taxFormByEntity.get('role')?.value
+                        ? taxFormByEntity.get('role')?.value
+                        : 'Select your role'
+                    }} 
+                  </span>
+                  <svg
+                    class="w-4 h-4 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <!-- Dropdown list -->
+                <div
+                  *ngIf="dropdownOpenForRole"
+                  class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                >
+                  <!-- Search input -->
+                  <div class="p-2">
+                    <input
+                      type="text"
+                      formControlName="role"
+                      (input)="filterRoles()"
+                      placeholder="Search..."
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <!-- Option list -->
+                  <div *ngFor="let c of filteredRoles">
+                    <div
+                      (click)="selectRole(c.title)"
+                      class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                    >
+                      {{ c.title }}
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
+
+
+          <!-- anual income  -->
 
           <div>
             <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>

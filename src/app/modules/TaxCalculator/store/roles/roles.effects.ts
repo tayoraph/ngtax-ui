@@ -30,8 +30,8 @@ export class RolesEffects {
   rolesbyCategoryandUserTypeEffects$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RolesActions.loadRoleByCategoryAndUserType),
-      mergeMap(({category, userType}) =>
-        this.taxReformService.getRolesByCategoryAndUserType(category, userType).pipe(
+      mergeMap(({ userType,category}) =>
+        this.taxReformService.getRolesByCategoryAndUserType( userType,category).pipe(
           //  tap(response => console.log('✅ API response in Effect:', response)), 
           map((response:ApiResponse<Role[]>) => RolesActions.loadRoleByCategoryAndUserTypeSuccess({ 
             rolesbyCategoryAndUserType: response.data
