@@ -68,6 +68,11 @@ categoryForm() {
             Validators.minLength(4),
 
         ])),
+        fixedAssets: new FormControl('', Validators.compose([
+            Validators.required,
+            Validators.minLength(4),
+
+        ])),
     })
 }
 
@@ -94,6 +99,12 @@ taxFormByEntity() {
             Validators.minLength(4),
 
         ])),
+        fixedAssets: new FormControl('', Validators.compose([
+            Validators.required,
+            Validators.minLength(4),
+
+        ])),
+        
     })
 }
 }

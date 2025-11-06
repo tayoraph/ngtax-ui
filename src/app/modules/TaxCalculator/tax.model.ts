@@ -27,7 +27,7 @@ export interface IndividualsData {
 }
 
 export interface BusinessesData {
-  EntrepreneursSMEs: BusinessCategory;
+  SmallCompanies: BusinessCategory;
   LargeCompanies: BusinessCategory;
   [key: string]: BusinessCategory; // For future expansion
 }

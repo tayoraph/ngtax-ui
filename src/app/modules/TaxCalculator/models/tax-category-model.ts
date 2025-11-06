@@ -35,4 +35,5 @@ export interface  taxCalculationBytaxcategoryRoleandIncome {
   taxName: string;
   incomeOrTurnover: number;
   userType?: string;
+  fixedAssets?: number
 }

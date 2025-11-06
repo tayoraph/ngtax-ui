@@ -3,11 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, FormGroup, FormsModule } from '@angular/forms';
 import { TaxData, EntityType, Role } from './tax.model';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { HttpClientModule } from '@angular/common/http';
 import { TaxReformService } from './tax.service';
 import { Store } from '@ngrx/store';
 import * as TaxReformActions from './store/actions';
-import {   selectAllTaxData,  selectCategoryData,  selectRoleData,  selectTaxCategoryData,  selectLoading} from './store/selectors';
 import * as RolesActions from './store/roles/roles.actions';
 import * as fromRoles from './store/roles/roles.selector';
 import { debounceTime, filter, Observable, take } from 'rxjs';
@@ -21,11 +19,12 @@ import * as TaxCategoriesActions from './store/tax-categories/tax-category.actio
 import {  calculateTaxBycategoryNameRoleAndIncomeSelector, calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector, loadTaxByUserTypeSelector, selectTaxCategories } from './store/tax-categories/tax-category.selector';
 import { taxCalculationBytaxcategoryRoleandIncome } from './models/tax-category-model';
 import { FormValidation } from 'src/Utils/formsValidations/formValidation';
+import { CurrencyFormatDirective } from 'src/Utils/Directives/currency-format.directive';
 
 @Component({
   selector: 'app-tax-calculator',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule,SuccessModalComponent, HttpClientModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule,SuccessModalComponent, CurrencyFormatDirective],
   templateUrl: './tax-calculator.component.html',
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -77,11 +76,16 @@ export class TaxCalculatorComponent implements OnInit{
   constructor(private fb: FormBuilder, private store: Store, public formValidation: FormValidation) {
     // Entity-based form
     this.taxFormByEntity = this.formValidation.taxFormByEntity();
+    // set the value of fixed assets to 0 by default
+    this.taxFormByEntity.get('fixedAssets')?.setValue(0);
+
     // By role form
     this.titleForm = this.formValidation.titleForm();
 
      // By category form
     this.categoryForm = this.formValidation.categoryForm();
+    this.categoryForm.get('fixedAssets')?.setValue(0);
+
 
     this.fetchRoles();
 
@@ -96,9 +100,12 @@ export class TaxCalculatorComponent implements OnInit{
 
 
      //when the caategory changes 
-     this.categoryForm.get('category')!.valueChanges
+    this.categoryForm.get('category')!.valueChanges
     .pipe(debounceTime(200))
     .subscribe(category => {
+      // Auto-close modal
+      this.showModal = false;
+      this.taxFormByEntity.patchValue({ fixedAssets: 0, role: '', income: '' });
        this.fetchRolesByCategory(category);
     });
 
@@ -106,8 +113,13 @@ export class TaxCalculatorComponent implements OnInit{
      this.taxFormByEntity.get('userType')!.valueChanges
     .pipe(debounceTime(200))
     .subscribe(category => {
+      // Auto-close modal
+       this.showModal = false;
+       this.taxFormByEntity.patchValue({ fixedAssets: 0, category: '', role: '', income: '' });
        this.fetchCategoryByUserType(category);
     });
+
+   
   }
 
 
@@ -306,9 +318,9 @@ showTaxResult(result: any, income:number) {
     let value : taxCalculationBytaxcategoryRoleandIncome = {
       role: this.categoryForm.get('role')?.value,
       taxName: this.categoryForm.get('category')?.value,
-      incomeOrTurnover: Number(this.categoryForm.get('income')?.value)
+      incomeOrTurnover: Number(this.categoryForm.get('income')?.value),
+      fixedAssets: this.categoryForm.get('fixedAssets')?.value
     }
-
     this.store.dispatch(TaxCategoriesActions.calculateTaxBycategoryNameRoleAndIncomeAction({calculateReq:value}))
     this.store.select(calculateTaxBycategoryNameRoleAndIncomeSelector)
           .pipe(
@@ -342,7 +354,7 @@ showTaxResult(result: any, income:number) {
       taxName: this.taxFormByEntity.get('category')?.value,
       incomeOrTurnover: Number(this.taxFormByEntity.get('income')?.value),
       userType: this.taxFormByEntity.get('userType')?.value,
-
+      fixedAssets: this.taxFormByEntity.get('fixedAssets')?.value
     }
     this.store.dispatch(TaxCategoriesActions.calculateTaxBycategoryNameRoleuserTypeAndIncomeAction({calculateReq:value}))
     this.store.select(calculateTaxBycategoryNameRoleUsertypeAndIncomeSelector)

@@ -1,21 +1,21 @@
 
       <!-- Calculation Mode Tabs -->
   <div class="bg-white shadow p-4 rounded-xl flex justify-center space-x-4 mb-6 sticky top-0 z-0 sm:z-10">
-  <button
+  <!-- <button
     (click)="calculationMode='byTitle'"
     [ngClass]="calculationMode==='byTitle' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700'"
     class="px-4 py-2 rounded-xl font-semibold transition"
   >
     By Role Title
-  </button>
+  </button> -->
 
-  <button
+  <!-- <button
     (click)="calculationMode='byCategory'"
     [ngClass]="calculationMode==='byCategory' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700'"
     class="px-4 py-2 rounded-xl font-semibold transition"
   >
     By Tax Category
-  </button>
+  </button> -->
 
   <button
     (click)="calculationMode='byEntity'"
@@ -106,8 +106,7 @@
               <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>
               <input  type="text"
                 [value]="formattedIncome"
-                (input)="onIncomeInput($event)"
-                (blur)="formatIncome()" placeholder="Enter income"
+                 placeholder="Enter income" appCurrencyFormat currency="NGN" locale="en-NG"
               class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
 
@@ -198,12 +197,34 @@
               </div>
           </div>
 
-          <!--  Annual Income / Turnover -->
-          <div>
-            <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>
-            <input type="number" formControlName="income" placeholder="Enter income or turnover"
-              class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+           <ng-contatiner *ngIf="!this.categoryForm.get('category')?.value.includes('Companies Income Tax')">
+              <!--  Annual Income / Turnover -->
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>
+                <input type="text" formControlName="income" placeholder="Enter income or turnover"
+                  class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" appCurrencyFormat currency="NGN" locale="en-NG"/>
+              </div>
+          </ng-contatiner>
+
+          <ng-contatiner *ngIf="this.categoryForm.get('category')?.value.includes('Companies Income Tax')">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" >
+
+            <!--  Annual Income / Turnover -->
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>
+              <input type="text" formControlName="income" placeholder="Enter income or turnover"
+                class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" appCurrencyFormat currency="NGN" locale="en-NG"/>
+            </div>
+            <!-- Fixed Assets Amount -->
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Fixed Assets amount (₦)</label>
+              <input type="text" formControlName="fixedAssets" placeholder="Enter Fixed assets amount"
+                class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" appCurrencyFormat currency="NGN" locale="en-NG" />
+            </div>
           </div>
+          </ng-contatiner>
+
+
           <button type="submit" [disabled]="categoryForm.invalid"
             class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition duration-300">
             Calculate Tax
@@ -222,133 +243,159 @@
               <option value="Businesses">Business</option>
             </select>
           </div>
-        <!-- categories -->
-          <div>
-            <label class="block text-gray-700 font-medium mb-2">Tax Category</label>
-         
-            <!-- Dropdown container -->
-              <div class="relative">
-                <!-- Select display -->
-                <div
-                  class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:bg-gray-200 focus:outline-none"
-                  (click)="toggleCategoryDropdown()"
-                >
-                  <span>
-                    {{
-                      taxFormByEntity.get('category')?.value
-                        ? taxFormByEntity.get('category')?.value
-                        : 'Select a tax category'
-                    }} 
-                  </span>
-                  <svg
-                    class="w-4 h-4 text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
 
-                <!-- Dropdown list -->
-                <div
-                  *ngIf="dropdownOpenForCategory"
-                  class="text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
-                >
-                  <!-- Search input -->
-                  <div class="p-2">
-                    <input
-                      type="text"
-                      formControlName="category"
-                      (input)="filterCategories()"
-                      placeholder="Search..."
-                      class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <!-- Option list -->
-                  <div *ngFor="let c of filteredCategories">
-                    <div
-                      (click)="selectCategory(c.name)"
-                      class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                    >
-                      {{ c.name }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-
-          <!--  roles -->
-          <div>
-            <label class="block text-gray-700 font-medium mb-2">Role</label>
        
 
-               <div class="relative">
-                <!-- Select display -->
-                <div
-                  class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  (click)="toggleRoleDropdown()"
-                >
-                  <span>
-                    {{
-                      taxFormByEntity.get('role')?.value
-                        ? taxFormByEntity.get('role')?.value
-                        : 'Select your role'
-                    }} 
-                  </span>
-                  <svg
-                    class="w-4 h-4 text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- categories -->
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Tax Category</label>
+          
+              <!-- Dropdown container -->
+                <div class="relative">
+                  <!-- Select display -->
+                  <div
+                    class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:bg-gray-200 focus:outline-none"
+                    (click)="toggleCategoryDropdown()"
                   >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-
-                <!-- Dropdown list -->
-                <div
-                  *ngIf="dropdownOpenForRole"
-                  class=" text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
-                >
-                  <!-- Search input -->
-                  <div class="p-2">
-                    <input
-                      type="text"
-                      formControlName="role"
-                      (input)="filterRoles()"
-                      placeholder="Search..."
-                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    <span>
+                      {{
+                        taxFormByEntity.get('category')?.value
+                          ? taxFormByEntity.get('category')?.value
+                          : 'Select a tax category'
+                      }} 
+                    </span>
+                    <svg
+                      class="w-4 h-4 text-gray-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
                   </div>
 
-                  <!-- Option list -->
-                  <div *ngFor="let c of rolesByCategoryAnduserTypeFiltered">
-                    <div
-                      (click)="selectRole(c.title)"
-                      class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                    >
-                      {{ c.title }}
+                  <!-- Dropdown list -->
+                  <div
+                    *ngIf="dropdownOpenForCategory"
+                    class="text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                  >
+                    <!-- Search input -->
+                    <div class="p-2">
+                      <input
+                        type="text"
+                        formControlName="category"
+                        (input)="filterCategories()"
+                        placeholder="Search..."
+                        class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Option list -->
+                    <div *ngFor="let c of filteredCategories">
+                      <div
+                        (click)="selectCategory(c.name)"
+                        class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                      >
+                        {{ c.name }}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+            </div>
+
+            <!--  roles -->
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Role</label>
+        
+
+                <div class="relative">
+                  <!-- Select display -->
+                  <div
+                    class="text-xs w-full border border-gray-300 rounded-xl px-5 py-3 cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    (click)="toggleRoleDropdown()"
+                  >
+                    <span>
+                      {{
+                        taxFormByEntity.get('role')?.value
+                          ? taxFormByEntity.get('role')?.value
+                          : 'Select your role'
+                      }} 
+                    </span>
+                    <svg
+                      class="w-4 h-4 text-gray-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+
+                  <!-- Dropdown list -->
+                  <div
+                    *ngIf="dropdownOpenForRole"
+                    class=" text-xs absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                  >
+                    <!-- Search input -->
+                    <div class="p-2">
+                      <input
+                        type="text"
+                        formControlName="role"
+                        (input)="filterRoles()"
+                        placeholder="Search..."
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Option list -->
+                    <div *ngFor="let c of rolesByCategoryAnduserTypeFiltered">
+                      <div
+                        (click)="selectRole(c.title)"
+                        class="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                      >
+                        {{ c.title }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
           </div>
 
+          <!--  if Entity is Individual , show only Income  -->
+          <ng-container *ngIf="this.taxFormByEntity.get('userType')?.value =='Individuals'">
+              <!-- Annual Income -->
+            <div >
+              <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>
+              <input type="text" formControlName="income" placeholder="Enter your income"
+                class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" appCurrencyFormat currency="NGN" locale="en-NG"/>
+            </div>
 
-          <!-- anual income  -->
+          </ng-container>
 
+
+          <!--  If entity is business, showw Income  and fixed assets -->
+
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-4" *ngIf="this.taxFormByEntity.get('userType')?.value =='Businesses'">
+          <!-- Annual Income -->
           <div>
             <label class="block text-gray-700 font-medium mb-2">Annual Income / Turnover (₦)</label>
-            <input type="number" formControlName="income" placeholder="Enter your income"
-              class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+            <input type="text" formControlName="income" placeholder="Enter your income"
+              class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" appCurrencyFormat currency="NGN" locale="en-NG"/>
           </div>
 
+          <!-- Fixed Assets Amount -->
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">Fixed Assets amount (₦)</label>
+            <input type="text" formControlName="fixedAssets" placeholder="Enter Fixed assets amount"
+              class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none" appCurrencyFormat currency="NGN" locale="en-NG"/>
+          </div>
+        </div>
+  
           <button type="submit" [disabled]="taxFormByEntity.invalid"
-            class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-primary transition duration-300">
+            class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-primary transition duration-300" >
             Calculate Tax
           </button>
         </form>
@@ -357,13 +404,16 @@
       </div>
 
 
-      <!-- Modal -->
-<app-success-modal
-  [show]="showModal"
-  [title]="modalTitle"
-  [message]="modalMessage"
-  [data]="modalData"
-  [type]="modalType"
-  (closed)="showModal = false"
-/>
+
+
+
+            <!-- Modal -->
+      <app-success-modal
+        [show]="showModal"
+        [title]="modalTitle"
+        [message]="modalMessage"
+        [data]="modalData"
+        [type]="modalType"
+        (closed)="showModal = false"
+      />
 
